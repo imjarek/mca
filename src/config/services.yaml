@@ -11,11 +11,9 @@ parameters:
 
     exception_to_status:
         InvalidArgumentException: 400
-        App\User\Domain\Exception\InvalidCredentialsException: 401
-        App\User\Domain\Exception\ForbiddenException: 403
+        App\Domain\User\Exception\InvalidCredentialsException: 401
+        App\Domain\User\Exception\ForbiddenException: 403
         App\Shared\Infrastructure\Persistence\ReadModel\Exception\NotFoundException: 404
-        Broadway\Repository\AggregateNotFoundException: 404
-
 services:
     # Needed since Since symfony/dependency-injection 5.1
     Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
@@ -52,29 +50,17 @@ services:
         resource: '../src/UI/*'
         exclude: '../src/UI/**/{EventSubscriber}'
 
-#    App\Shared\Infrastructure\Bus\Command\MessengerCommandBus:
-#        arguments:
-#            - '@messenger.bus.command'
-#
-#    App\Shared\Infrastructure\Bus\Query\MessengerQueryBus:
-#        arguments:
-#            - '@messenger.bus.query'
+    App\Shared\Infrastructure\Bus\Command\MessengerCommandBus:
+        arguments:
+            - '@messenger.bus.command'
 
-#    App\Shared\Infrastructure\Bus\AsyncEvent\MessengerAsyncEventBus:
-#        arguments:
-#            - '@messenger.bus.event.async'
+    App\Shared\Infrastructure\Bus\Query\MessengerQueryBus:
+        arguments:
+            - '@messenger.bus.query'
 
-    ### Event Store
-
-#    Broadway\EventStore\Dbal\DBALEventStore:
-#        public: true
-#        arguments:
-#            - '@doctrine.dbal.default_connection'
-#            - '@broadway.serializer.payload'
-#            - '@broadway.serializer.metadata'
-#            - 'events'
-#            - true
-#            - '@broadway.uuid.converter'
+    App\Shared\Infrastructure\Bus\AsyncEvent\MessengerAsyncEventBus:
+        arguments:
+            - '@messenger.bus.event.async'
 
     ### UI
 
@@ -85,9 +71,9 @@ services:
         resource: '../src/UI/Http/Rest/Controller/*'
         tags: [ 'controller.service_arguments' ]
 
-#    UI\Http\Web\Controller\:
-#        resource: '../src/UI/Http/Web/Controller/*'
-#        tags: [ 'controller.service_arguments' ]
+    UI\Http\Web\Controller\:
+        resource: '../src/UI/Http/Web/Controller/*'
+        tags: [ 'controller.service_arguments' ]
 
     ### UI Listeners
 

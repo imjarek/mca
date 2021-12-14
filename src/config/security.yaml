@@ -3,11 +3,11 @@ security:
 
     password_hashers:
         hasher:
-            id: App\User\Infrastructure\Auth\PasswordHasher
+            id: App\Domain\User\Infrastructure\PasswordHasher
 
     providers:
         users:
-            id: 'App\User\Infrastructure\Auth\AuthProvider'
+            id: 'App\Domain\User\Infrastructure\AuthProvider'
 
     firewalls:
         dev:
@@ -42,7 +42,7 @@ security:
             pattern: ^/
             provider: users
             custom_authenticators:
-            - 'App\User\Infrastructure\Auth\Guard\LoginAuthenticator'
+            - 'App\Domain\Auth\Infrastructure\Guard\LoginAuthenticator'
             form_login:
               login_path: /sign-in
               check_path: sign-in

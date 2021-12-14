@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Shared\Infrastructure\Event\Consumer;
 
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use App\Shared\Infrastructure\DomainMessage;
+use App\Shared\Infrastructure\Event\ReadModel\ElasticSearchEventRepository;
 
-class SendEventsToKafka implements MessageSubscriberInterface
+class SendEventsToElasticConsumer implements MessageSubscriberInterface
 {
     private ElasticSearchEventRepository $eventElasticRepository;
 
@@ -17,14 +19,16 @@ class SendEventsToKafka implements MessageSubscriberInterface
 
     public function __invoke(DomainMessage $event): void
     {
-        $this->eventElasticRepository->store($event);
+        // we need to switch to Kafka
+        //$this->eventElasticRepository->store($event);
     }
 
     public static function getHandledMessages(): iterable
     {
-        yield DomainMessage::class => [
-            'from_transport' => 'events',
-            'bus' => 'messenger.bus.event.async',
-        ];
+//        yield DomainMessage::class => [
+//            'from_transport' => 'events',
+//            'bus' => 'messenger.bus.event.async',
+//        ];
+        yield DomainMessage::class;
     }
 }

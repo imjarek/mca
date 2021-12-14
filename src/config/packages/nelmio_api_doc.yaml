@@ -48,7 +48,7 @@ nelmio_api_doc:
                                 type: object
                                 properties:
                                     data:
-                                        $ref: "#/components/schemas/UserView"
+                                        $ref: "#/components/schemas/User"
                                     relationships:
                                         ref: "#/components/schemas/Relationships"
                 orders:
@@ -63,7 +63,7 @@ nelmio_api_doc:
                                     relationships:
                                         ref: "#/components/schemas/Relationships"
             schemas:
-                UserView:
+                User:
                     type: object
                     properties:
                         uuid:

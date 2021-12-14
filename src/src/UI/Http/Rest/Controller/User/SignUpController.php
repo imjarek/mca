@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace UI\Http\Rest\Controller\User;
 
-use App\User\Application\Command\SignUp\SignUpCommand;
+use App\Domain\User\Application\Command\SignUp\SignUpCommand;
 use Ramsey\Uuid\Uuid;
 use UI\Http\Rest\Controller\CommandController;
 use UI\Http\Rest\Response\OpenApi;

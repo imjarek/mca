@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace UI\Http\Rest\Controller\Health;
 
 use App\Shared\Infrastructure\Event\ReadModel\ElasticSearchEventRepository;
-use App\User\Infrastructure\ReadModel\Mysql\MysqlReadModelUserRepository;
+use App\Domain\User\Repository\UserRepository;
 use UI\Http\Rest\Response\OpenApi;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;

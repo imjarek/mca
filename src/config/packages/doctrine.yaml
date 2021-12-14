@@ -9,6 +9,7 @@ doctrine:
         server_version: '12'
         types:
             uuid_binary: Ramsey\Uuid\Doctrine\UuidBinaryType
+            uuid: Ramsey\Uuid\Doctrine\UuidType
             datetime_immutable: App\Shared\Infrastructure\Persistence\Doctrine\Types\DateTimeType
             email: App\Shared\Infrastructure\Persistence\Doctrine\Types\EmailType
             hashed_password: App\Shared\Infrastructure\Persistence\Doctrine\Types\HashedPasswordType
@@ -19,13 +20,14 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            App\Domain\Auth:
+            App\Domain\User:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/App/Domain/Auth/'
-                prefix: 'App\Domain\Auth\Entity'
-            App\Domain\Order:
-                is_bundle: false
-                type: annotation
-                dir: '%kernel.project_dir%/src/App/Domain/Order/'
-                prefix: 'App\Domain\Order\Entity'
+                dir: '%kernel.project_dir%/src/App/Domain/User/Entity'
+                prefix: 'App\Domain\User'
+                alias: App
+#            App\Domain\Order:
+#                is_bundle: false
+#                type: xml
+#                dir: '%kernel.project_dir%/config/packages/doctrine/mapping/order'
+#                prefix: 'App\Domain\Order'

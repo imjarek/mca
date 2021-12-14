@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace UI\Http\Rest\Controller\User;
 
 use App\Shared\Application\Query\Item;
-use App\User\Application\Query\User\FindByEmail\FindByEmailQuery;
+use App\Domain\User\Application\Query\User\FindByEmail\FindByEmailQuery;
 use UI\Http\Rest\Controller\QueryController;
 use UI\Http\Rest\Response\OpenApi;
 use Assert\Assertion;

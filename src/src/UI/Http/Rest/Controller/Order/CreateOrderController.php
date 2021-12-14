@@ -40,6 +40,7 @@ final class CreateOrderController extends CommandController
      *     @OA\Schema(type="object"),
      *     @OA\JsonContent(
      *         type="object",
+     *         @OA\Property(property="description", type="string"),
      *     )
      * )
      *
@@ -50,9 +51,9 @@ final class CreateOrderController extends CommandController
      */
     public function __invoke(Request $request): OpenApi
     {
-        $comment = $request->get('comment');
+        $comment = $request->get('description');
 
-        Assertion::notNull($comment, "Please write order comment");
+        Assertion::notNull($comment, "Please write order description");
         $commandRequest = new OrderCreateCommand($comment);
 
         $this->handle($commandRequest);

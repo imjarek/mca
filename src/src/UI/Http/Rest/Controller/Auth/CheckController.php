@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace UI\Http\Rest\Controller\Auth;
 
-use App\User\Application\Command\SignIn\SignInCommand;
-use App\User\Application\Query\Auth\GetToken\GetTokenQuery;
-use App\User\Domain\Exception\InvalidCredentialsException;
+use App\Domain\User\Application\Command\SignIn\SignInCommand;
+use App\Domain\User\Application\Query\Auth\GetToken\GetTokenQuery;
+use App\Domain\User\Exception\InvalidCredentialsException;
 use UI\Http\Rest\Controller\CommandQueryController;
 use UI\Http\Rest\Response\OpenApi;
 use Assert\Assertion;
@@ -49,8 +49,8 @@ final class CheckController extends CommandQueryController
      * @OA\RequestBody(
      *     @OA\JsonContent(
      *         type="object",
-     *         @OA\Property(property="_password", type="string"),
-     *         @OA\Property(property="_username", type="string")
+     *         @OA\Property(property="password", type="string"),
+     *         @OA\Property(property="username", type="string")
      *     )
      * )
      *

@@ -22,8 +22,10 @@ services:
       - APP_ENV=${APP_ENV}
       - APP_SECRET=${APP_SECRET}
       - DATABASE_URL=${DATABASE_URL}
+      - XDEBUG_SESSION=PHPSTORM
     volumes:
       - ./src/:/var/www
+
 
   nginx:
     container_name: nginx
