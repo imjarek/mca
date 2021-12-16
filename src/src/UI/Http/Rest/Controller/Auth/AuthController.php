@@ -7,6 +7,7 @@ namespace UI\Http\Rest\Controller\Auth;
 use App\Domain\User\Application\Command\SignIn\SignInCommand;
 use App\Domain\User\Application\Query\Auth\GetToken\GetTokenQuery;
 use App\Domain\User\Exception\InvalidCredentialsException;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use UI\Http\Rest\Controller\CommandQueryController;
 use UI\Http\Rest\Response\OpenApi;
 use Assert\Assertion;
@@ -16,12 +17,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
 
-final class CheckController extends CommandQueryController
+final class AuthController extends CommandQueryController
 {
     /**
      * @Route(
-     *     "/auth_check",
-     *     name="auth_check",
+     *     "/auth",
+     *     name="api_auth",
      *     methods={"POST"},
      *     requirements={
      *      "username": "\w+",

@@ -9,6 +9,8 @@ use App\Shared\Domain\Exception\DateTimeException;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Domain\User\Specification\UniqueEmailSpecificationInterface;
 use App\Domain\User\Entity\User;
+use App\Shared\Infrastructure\Service\IEmailVerificationService;
+
 
 final class SignUpHandler implements CommandHandlerInterface
 {
@@ -18,10 +20,12 @@ final class SignUpHandler implements CommandHandlerInterface
 
     public function __construct(
         UserRepositoryInterface $userRepository,
-        UniqueEmailSpecificationInterface $uniqueEmailSpecification
+        UniqueEmailSpecificationInterface $uniqueEmailSpecification,
+        IEmailVerificationService $verificator
     ) {
         $this->userRepository = $userRepository;
         $this->uniqueEmailSpecification = $uniqueEmailSpecification;
+        $this->verificator = $verificator;
     }
 
     /**
@@ -32,5 +36,7 @@ final class SignUpHandler implements CommandHandlerInterface
         $user = User::create($command->uuid, $command->credentials, $this->uniqueEmailSpecification);
 
         $this->userRepository->store($user);
+
+        $this->verificator->sendEmailVerificationEmail($user);
     }
 }
