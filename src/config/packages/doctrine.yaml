@@ -26,6 +26,16 @@ doctrine:
                 dir: '%kernel.project_dir%/src/App/Domain/User/Entity'
                 prefix: 'App\Domain\User'
                 alias: App
+            App\Shared\Domain\Entity\Region:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/App/Shared/Domain/Entity'
+                prefix: 'App\Shared\Domain\Entity\Region'
+            App\Domain\Partner:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/App/Domain/Partner/Entity'
+                prefix: 'App\Domain\Partner'
 #            App\Domain\Order:
 #                is_bundle: false
 #                type: xml

@@ -6,9 +6,9 @@ namespace App\Shared\Infrastructure;
 
 
 /**
- * Convenience base class for event sourced aggregate roots.
+ * Base class for aggregate roots.
  */
-class EventSourcedAggregateRoot
+class AggregateRoot
 {
 
     public function apply($event): void

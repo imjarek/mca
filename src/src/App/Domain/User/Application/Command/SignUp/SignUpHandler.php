@@ -29,7 +29,7 @@ final class SignUpHandler implements CommandHandlerInterface
      */
     public function __invoke(SignUpCommand $command): void
     {
-        $user = User::create($command->uuid, $command->credentials);
+        $user = User::create($command->uuid, $command->credentials, $this->uniqueEmailSpecification);
 
         $this->userRepository->store($user);
     }

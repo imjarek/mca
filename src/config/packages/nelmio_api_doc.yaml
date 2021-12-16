@@ -51,6 +51,15 @@ nelmio_api_doc:
                                         $ref: "#/components/schemas/User"
                                     relationships:
                                         ref: "#/components/schemas/Relationships"
+                partners:
+                    description: Partners list
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: "#/components/schemas/User"
                 orders:
                     description: Order list
                     content:
@@ -83,7 +92,30 @@ nelmio_api_doc:
                                     example: 'j@j.com'
                                 password:
                                     type: string
-                                    example: ;klsdjhsd;gjkdhg;sldkgjhs;dlkgjsd;lfgkj
+                                    example: secret
+                Partner:
+                    type: object
+                    properties:
+                        uuid:
+                            type: string
+                            example: 8ca33fd4-ff46-11ea-adc1-0242ac121234
+                        inn:
+                            type: string
+                        bik:
+                            type: string
+                        kpp:
+                            type: string
+                        legalAdress:
+                            type: string
+                        actualAddress:
+                            type: string
+                        bankingAccount:
+                        createdAt:
+                            type: string
+                            format: date-time
+                        updatedAt:
+                            type: string
+                            format: date-time
                 OrderView:
                     type: object
                     properties:

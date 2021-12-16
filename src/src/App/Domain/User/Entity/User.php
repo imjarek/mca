@@ -3,6 +3,7 @@
 
 namespace App\Domain\User\Entity;
 
+use App\Domain\User\Specification\UniqueEmailSpecificationInterface;
 use App\Domain\User\ValueObject\Credentials;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\HashedPassword;
@@ -12,9 +13,9 @@ use App\Domain\User\Event\UserEmailChanged;
 use App\Domain\User\Event\UserSignedIn;
 use App\Domain\User\Event\UserWasCreated;
 use App\Domain\User\Exception\InvalidCredentialsException;
+use App\Shared\Infrastructure\AggregateRoot;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
-use App\Domain\User\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 use Ramsey\Uuid\UuidInterface;
@@ -23,7 +24,7 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Entity()
  * @ORM\Table(name="`user`")
  */
-class User extends \App\Shared\Infrastructure\EventSourcedAggregateRoot
+class User extends AggregateRoot
 {
     /**
      * @ORM\Id
@@ -36,6 +37,30 @@ class User extends \App\Shared\Infrastructure\EventSourcedAggregateRoot
      * @ORM\Embedded(class="App\Domain\User\ValueObject\Credentials", columnPrefix=false)
      */
     private Credentials $credentials;
+
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private $surname;
+    /**
+     * Many Users have Many Phonenumbers.
+     * @ORM\ManyToMany(targetEntity="App\Domain\Partner\Entity\Partner")
+     * @ORM\JoinTable(name="user_partner",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="uuid")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="partner_id", referencedColumnName="uuid", unique=true)}
+     *      )
+     */
+    private $partner;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -52,10 +77,11 @@ class User extends \App\Shared\Infrastructure\EventSourcedAggregateRoot
      */
     public static function create(
         $uuid,
-        $credentials
+        $credentials,
+        UniqueEmailSpecificationInterface $uniqueEmailSpecification
     ): self {
+        $uniqueEmailSpecification->isUnique($credentials->getEmail());
         $user = new self();
-
         $user->apply(new UserWasCreated($uuid, $credentials, DateTime::now()));
 
         return $user;
@@ -88,8 +114,6 @@ class User extends \App\Shared\Infrastructure\EventSourcedAggregateRoot
     {
         $this->uuid = $event->uuid;
         $this->setCredentials($event->credentials->getEmail(), $event->credentials->getPassword());
-//        $this->setEmail($event->credentials->getEmail());
-//        $this->setHashedPassword($event->credentials->getPassword());
         $this->setCreatedAt($event->createdAt);
     }
 
