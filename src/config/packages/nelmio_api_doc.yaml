@@ -110,6 +110,11 @@ nelmio_api_doc:
                         actualAddress:
                             type: string
                         bankingAccount:
+                            type: string
+                        regionCode:
+                            type: string
+                        phone:
+                            type: string
                         createdAt:
                             type: string
                             format: date-time

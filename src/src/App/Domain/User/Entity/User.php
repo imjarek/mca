@@ -87,6 +87,11 @@ class User extends AggregateRoot
         return $user;
     }
 
+    public function getFirstName():?string
+    {
+        return $this->firstname;
+    }
+
     /**
      * @throws DateTimeException
      */
@@ -164,7 +169,7 @@ class User extends AggregateRoot
 
     public function email(): string
     {
-        return $this->email->toString();
+        return $this->credentials->getEmail()->toString();
     }
 
     public function uuid(): string

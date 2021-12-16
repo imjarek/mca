@@ -1,24 +1,61 @@
 security:
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    enable_authenticator_manager: true
+
+    password_hashers:
+        hasher:
+            id: App\Domain\User\Infrastructure\PasswordHasher
+
     providers:
-        users_in_memory: { memory: null }
+        users:
+            id: 'App\Domain\User\Infrastructure\AuthProvider'
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            anonymous: true
-            lazy: true
-            provider: users_in_memory
 
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
+        api_health:
+            pattern:  ^/api/health
+            stateless: true
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+        api_doc:
+            pattern:  ^/api/doc
+            stateless: true
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+        api_auth:
+            pattern:  ^/api/auth
+            stateless: true
+
+        api_signup:
+            pattern:  ^/api/signup
+            stateless: true
+
+        api_secured:
+            pattern:  ^/api
+            provider: users
+            stateless: true
+            guard:
+              authenticators:
+                - lexik_jwt_authentication.jwt_token_authenticator
+
+        secured_area:
+            pattern: ^/
+            provider: users
+            custom_authenticators:
+            - 'App\Domain\Auth\Infrastructure\Guard\LoginAuthenticator'
+            form_login:
+              login_path: /sign-in
+              check_path: sign-in
+            entry_point: form_login
+            logout:
+              path: /logout
+              target: /
+
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/profile,      roles: ROLE_USER }
+        - { path: ^/api/health, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/auth,    roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/signup,  roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/doc,     roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/,        roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/,            roles: IS_AUTHENTICATED_ANONYMOUSLY }

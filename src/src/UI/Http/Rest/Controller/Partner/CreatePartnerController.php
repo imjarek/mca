@@ -71,14 +71,14 @@ final class CreatePartnerController extends CommandController
         Assertion::allNotNull([
             $inn, $phone, $bik, $kpp, $bank, $bankAccount, $legalAddress, $actualAdress
         ], "Required parameters missing");
-        $uuid = Uuid::uuid4();
 
+        $uuid = Uuid::uuid4();
         $commandRequest = new CreatePartnerCommand(
             $uuid, $inn, $phone, $bik, $kpp, $bank, $bankAccount, $regionCode, $legalAddress, $actualAdress
         );
 
         $this->handle($commandRequest);
 
-        return OpenApi::created("/user/$uuid");
+        return OpenApi::created("/partner/$uuid");
     }
 }
