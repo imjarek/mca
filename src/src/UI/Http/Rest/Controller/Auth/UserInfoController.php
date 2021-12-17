@@ -2,20 +2,28 @@
 
 namespace UI\Http\Rest\Controller\Auth;
 
-use App\Core\Exception\ApiException;
 use App\Domain\User\Exception\UnauthenticatedException;
+use App\Domain\User\Infrastructure\ReadModel\UserView;
+use App\Domain\User\Repository\UserRepository;
+use App\Shared\Application\Query\Item;
 use Assert\AssertionFailedException;
-use Ramsey\Uuid\Uuid;
-use Symfony\Component\HttpFoundation\Request;
-use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
-use UI\Http\Session;
-use Symfony\Component\Security\Core\Security;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Token\JWTUserToken;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
-use UI\Http\Rest\Response\OpenApi;
+use Symfony\Component\Security\Core\Security;
+use Nelmio\ApiDocBundle\Annotation\Security as ApiSecurity;
+use UI\Http\Rest\Controller\QueryController;
 
-class UserInfoController
+class UserInfoController extends QueryController
 {
+    protected Security $security;
+    protected UserRepository $repository;
+
+    public function __construct(UserRepository$repository, Security $security)
+    {
+        $this->security = $security;
+        $this->repository = $repository;
+    }
     /**
      * @Route(
      *     "/user_info",
@@ -39,12 +47,24 @@ class UserInfoController
      * @throws AssertionFailedException
      * @throws Throwable
      */
-    public function userInfo(Session $session)
+    public function userInfo()
     {
-        if (!$session->get()->uuid()) {
-            throw new ForbiddenException();
+        $token = $this->security->getToken();
+
+        if ($token instanceof JWTUserToken) {
+            if ($authModel = $token->getUser())
+                $user = $this->repository->oneByUuid($authModel->uuid());
+                $userData = [
+                    'id' => $user->uuid(),
+                    'email' => $user->email(),
+                    'first_name' => $user->getFirstName(),
+                    'last_name' => $user->getLastName()
+                ];
+            return $this->json(Item::fromPayload($user->uuid(), UserView::TYPE, $userData));
         }
 
         throw new UnauthenticatedException();
+
+
     }
 }

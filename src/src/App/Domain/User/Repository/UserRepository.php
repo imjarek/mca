@@ -52,7 +52,7 @@ final class UserRepository extends SqlRepository implements CheckUserByEmailInte
      * @throws NotFoundException
      * @throws NonUniqueResultException
      */
-    public function oneByUuid(UuidInterface $uuid): UserView
+    public function oneByUuid(UuidInterface $uuid)
     {
         $qb = $this->repository
             ->createQueryBuilder('user')

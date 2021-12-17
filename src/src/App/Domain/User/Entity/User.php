@@ -92,6 +92,11 @@ class User extends AggregateRoot
         return $this->firstname;
     }
 
+    public function getLastName():?string
+    {
+        return $this->lastname;
+    }
+
     /**
      * @throws DateTimeException
      */
@@ -121,6 +126,7 @@ class User extends AggregateRoot
         $this->setCredentials($event->credentials->getEmail(), $event->credentials->getPassword());
         $this->setCreatedAt($event->createdAt);
     }
+
 
     /**
      * @throws AssertionFailedException

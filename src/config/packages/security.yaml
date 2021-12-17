@@ -1,9 +1,9 @@
 security:
     enable_authenticator_manager: true
 
-    password_hashers:
-        hasher:
-            id: App\Domain\User\Infrastructure\PasswordHasher
+#    password_hashers:
+#        hasher:
+#            id: 'App\Domain\User\Infrastructure\PasswordHasher'
 
     providers:
         users:
@@ -42,7 +42,7 @@ security:
             pattern: ^/
             provider: users
             custom_authenticators:
-            - 'App\Domain\Auth\Infrastructure\Guard\LoginAuthenticator'
+            - 'App\Domain\User\Infrastructure\Guard\LoginAuthenticator'
             form_login:
               login_path: /sign-in
               check_path: sign-in
