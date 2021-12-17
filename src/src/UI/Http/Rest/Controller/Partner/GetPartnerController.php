@@ -7,7 +7,7 @@ namespace UI\Http\Rest\Controller\Partner;
 use App\Domain\User\Application\Command\SignUp\SignUpCommand;
 use Ramsey\Uuid\Uuid;
 use UI\Http\Rest\Controller\CommandController;
-use UI\Http\Rest\Response\OpenApi;
+use UI\Http\Rest\Response\OpenApiResponse;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use OpenApi\Annotations as OA;

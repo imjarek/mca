@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace UI\Http\Rest\Controller\Partner;
 
 use App\Domain\Partner\Application\Command\CreatePartnerCommand;
+use App\Domain\User\Repository\UserRepository;
 use Assert\Assertion;
 use Ramsey\Uuid\Uuid;
 use UI\Http\Rest\Controller\CommandController;
-use UI\Http\Rest\Response\OpenApi;
+use UI\Http\Rest\Response\OpenApiResponse;
 use Assert\AssertionFailedException;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,7 +57,7 @@ final class CreatePartnerController extends CommandController
      * @throws AssertionFailedException
      * @throws Throwable
      */
-    public function __invoke(Request $request): OpenApi
+    public function __invoke(Request $request, UserRepository $userRepository): OpenApiResponse
     {
         $inn = $request->get('inn');
         $phone = $request->get('phone');
@@ -73,12 +74,15 @@ final class CreatePartnerController extends CommandController
         ], "Required parameters missing");
 
         $uuid = Uuid::uuid4();
+
+        $user = $userRepository->oneByUuid($this->getUser()->uuid());
+
         $commandRequest = new CreatePartnerCommand(
-            $uuid, $inn, $phone, $bik, $kpp, $bank, $bankAccount, $regionCode, $legalAddress, $actualAdress
+            $uuid, $inn, $phone, $bik, $kpp, $bank, $bankAccount, $regionCode, $legalAddress, $actualAdress, $user
         );
 
         $this->handle($commandRequest);
 
-        return OpenApi::created("/partner/$uuid");
+        return OpenApiResponse::created("/partner/$uuid");
     }
 }

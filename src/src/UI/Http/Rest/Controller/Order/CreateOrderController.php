@@ -7,7 +7,7 @@ namespace UI\Http\Rest\Controller\Order;
 use App\Order\Application\Command\Create\OrderCreateCommand;
 use App\Order\Application\Command\Create\OrderCreateHandler;
 use UI\Http\Rest\Controller\CommandController;
-use UI\Http\Rest\Response\OpenApi;
+use UI\Http\Rest\Response\OpenApiResponse;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use OpenApi\Annotations as OA;

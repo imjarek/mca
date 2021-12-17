@@ -8,7 +8,7 @@ use App\Shared\Application\Query\Collection;
 use App\Shared\Application\Query\Item;
 use App\Shared\Application\Query\QueryBusInterface;
 use App\Shared\Application\Query\QueryInterface;
-use UI\Http\Rest\Response\OpenApi;
+use UI\Http\Rest\Response\OpenApiResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Throwable;
 
@@ -36,18 +36,18 @@ abstract class QueryController
         return $this->queryBus->ask($query);
     }
 
-    protected function jsonCollection(Collection $collection, int $status = OpenApi::HTTP_OK, bool $isImmutable = false): OpenApi
+    protected function jsonCollection(Collection $collection, int $status = OpenApiResponse::HTTP_OK, bool $isImmutable = false): OpenApi
     {
-        $response = OpenApi::collection($collection, $status);
+        $response = OpenApiResponse::collection($collection, $status);
 
         $this->decorateWithCache($response, $collection, $isImmutable);
 
         return $response;
     }
 
-    protected function json(Item $resource, int $status = OpenApi::HTTP_OK): OpenApi
+    protected function json(Item $resource, int $status = OpenApiResponse::HTTP_OK): OpenApiResponse
     {
-        return OpenApi::one($resource, $status);
+        return OpenApiResponse::one($resource, $status);
     }
 
     protected function route(string $name, array $params = []): string

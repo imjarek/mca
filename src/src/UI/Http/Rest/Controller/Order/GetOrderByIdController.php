@@ -7,7 +7,7 @@ namespace UI\Http\Rest\Controller\Order;
 use App\Order\Application\Query\Order\FindById\FindByIdQuery;
 use App\Shared\Application\Query\Item;
 use UI\Http\Rest\Controller\QueryController;
-use UI\Http\Rest\Response\OpenApi;
+use UI\Http\Rest\Response\OpenApiResponse;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use Nelmio\ApiDocBundle\Annotation\Security;

@@ -52,16 +52,11 @@ class User extends AggregateRoot
      * @ORM\Column(type="string", length=32, nullable=true)
      */
     private $surname;
-    /**
-     * Many Users have Many Phonenumbers.
-     * @ORM\ManyToMany(targetEntity="App\Domain\Partner\Entity\Partner")
-     * @ORM\JoinTable(name="user_partner",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="uuid")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="partner_id", referencedColumnName="uuid", unique=true)}
-     *      )
-     */
-    private $partner;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $emailVerifiedAt;
     /**
      * @ORM\Column(type="datetime_immutable")
      */
@@ -178,6 +173,15 @@ class User extends AggregateRoot
         return $this->credentials->getEmail()->toString();
     }
 
+    public function setEmailVerified()
+    {
+        $this->emailVerifiedAt = DateTime::now();
+    }
+
+    public function getEmailVerified()
+    {
+        return $this->emailVerifiedAt;
+    }
     public function uuid(): string
     {
         return $this->uuid->toString();

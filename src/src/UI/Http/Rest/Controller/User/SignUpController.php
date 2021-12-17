@@ -7,7 +7,7 @@ namespace UI\Http\Rest\Controller\User;
 use App\Domain\User\Application\Command\SignUp\SignUpCommand;
 use Ramsey\Uuid\Uuid;
 use UI\Http\Rest\Controller\CommandController;
-use UI\Http\Rest\Response\OpenApi;
+use UI\Http\Rest\Response\OpenApiResponse;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use OpenApi\Annotations as OA;
@@ -50,7 +50,7 @@ final class SignUpController extends CommandController
      * @throws AssertionFailedException
      * @throws Throwable
      */
-    public function __invoke(Request $request): OpenApi
+    public function __invoke(Request $request): OpenApiResponse
     {
         $email = $request->get('email');
         $plainPassword = $request->get('password');
@@ -64,6 +64,6 @@ final class SignUpController extends CommandController
 
         $this->handle($commandRequest);
 
-        return OpenApi::created("/user/$email");
+        return OpenApiResponse::created("/user/$email");
     }
 }

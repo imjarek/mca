@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20211216101048 extends AbstractMigration
+final class Version20211217144514 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -24,21 +24,21 @@ final class Version20211216101048 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN partner.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN partner.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN partner.updated_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('CREATE TABLE user_partner (partner_id UUID NOT NULL, user_id UUID NOT NULL, PRIMARY KEY(partner_id, user_id))');
+        $this->addSql('CREATE INDEX IDX_6926201C9393F8FE ON user_partner (partner_id)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_6926201CA76ED395 ON user_partner (user_id)');
+        $this->addSql('COMMENT ON COLUMN user_partner.partner_id IS \'(DC2Type:uuid)\'');
+        $this->addSql('COMMENT ON COLUMN user_partner.user_id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE region (id INT NOT NULL, name VARCHAR(64) NOT NULL, code VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE "user" (uuid UUID NOT NULL, firstname VARCHAR(32) DEFAULT NULL, lastname VARCHAR(32) DEFAULT NULL, surname VARCHAR(32) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(uuid))');
+        $this->addSql('CREATE TABLE "user" (uuid UUID NOT NULL, firstname VARCHAR(32) DEFAULT NULL, lastname VARCHAR(32) DEFAULT NULL, surname VARCHAR(32) DEFAULT NULL, email_verified_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(uuid))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON "user" (email)');
         $this->addSql('COMMENT ON COLUMN "user".uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN "user".created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN "user".updated_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN "user".email IS \'(DC2Type:email)\'');
         $this->addSql('COMMENT ON COLUMN "user".password IS \'(DC2Type:hashed_password)\'');
-        $this->addSql('CREATE TABLE user_partner (user_id UUID NOT NULL, partner_id UUID NOT NULL, PRIMARY KEY(user_id, partner_id))');
-        $this->addSql('CREATE INDEX IDX_6926201CA76ED395 ON user_partner (user_id)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_6926201C9393F8FE ON user_partner (partner_id)');
-        $this->addSql('COMMENT ON COLUMN user_partner.user_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('COMMENT ON COLUMN user_partner.partner_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('ALTER TABLE user_partner ADD CONSTRAINT FK_6926201CA76ED395 FOREIGN KEY (user_id) REFERENCES "user" (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE user_partner ADD CONSTRAINT FK_6926201C9393F8FE FOREIGN KEY (partner_id) REFERENCES partner (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE user_partner ADD CONSTRAINT FK_6926201CA76ED395 FOREIGN KEY (user_id) REFERENCES "user" (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema) : void
@@ -48,8 +48,8 @@ final class Version20211216101048 extends AbstractMigration
         $this->addSql('ALTER TABLE user_partner DROP CONSTRAINT FK_6926201C9393F8FE');
         $this->addSql('ALTER TABLE user_partner DROP CONSTRAINT FK_6926201CA76ED395');
         $this->addSql('DROP TABLE partner');
+        $this->addSql('DROP TABLE user_partner');
         $this->addSql('DROP TABLE region');
         $this->addSql('DROP TABLE "user"');
-        $this->addSql('DROP TABLE user_partner');
     }
 }

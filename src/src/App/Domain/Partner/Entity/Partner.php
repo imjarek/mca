@@ -10,6 +10,7 @@ use App\Domain\User\Specification\UniqueEmailSpecificationInterface;
 use App\Shared\Domain\Exception\DateTimeException;
 use App\Shared\Domain\ValueObject\DateTime;
 use App\Shared\Infrastructure\AggregateRoot;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -74,6 +75,16 @@ class Partner extends AggregateRoot
 //     * @ORM\ManyToOne(targetEntity="App\Shared\Domain\Entity\Region", inversedBy="region")
 //     */
 //    private $region;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Domain\User\Entity\User")
+     * @ORM\JoinTable(name="user_partner",
+     *      joinColumns={@ORM\JoinColumn(name="partner_id", referencedColumnName="uuid")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="uuid", unique=true)}
+     *      )
+     */
+    private $users;
+
     /**
      * @ORM\Column(type="datetime_immutable")
      */
@@ -101,8 +112,8 @@ class Partner extends AggregateRoot
         UniqueInnSpecificationInterface $uniqueInnSpecification
     ): self {
         $uniqueInnSpecification->isUnique($inn);
-        $user = new self();
-        $user->apply(
+        $partner = new self();
+        $partner->apply(
             new PartnerWasCreated(
                 $uuid,
                 $inn,
@@ -114,10 +125,10 @@ class Partner extends AggregateRoot
                 $bankAccount,
                 $regionCode,
                 $legalAddress,
-                $actualAdress,
+                $actualAdress
             )
         );
-        return $user;
+        return $partner;
     }
 
     protected function applyPartnerWasCreated(PartnerWasCreated $event): void
@@ -133,6 +144,10 @@ class Partner extends AggregateRoot
         $this->legalAddress = $event->legalAddress;
         $this->actualAddress = $event->actualAddress;
         $this->setCreatedAt($event->createdAt);
+
+        if (!empty($event->user)) {
+            $this->setUsers([$event->user]);
+        }
     }
 
     private function setCreatedAt(DateTime $createdAt): void
@@ -163,6 +178,10 @@ class Partner extends AggregateRoot
     public function uuid(): string
     {
         return $this->uuid->toString();
+    }
+
+    function setUsers($users) {
+        $this->users = new ArrayCollection($users);
     }
 
     public function getAggregateRootId(): string

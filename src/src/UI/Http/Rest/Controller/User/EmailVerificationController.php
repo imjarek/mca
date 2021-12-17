@@ -2,22 +2,29 @@
 
 namespace UI\Http\Rest\Controller\User;
 
-use App\Domain\Common\ApiException\AddEmployeeToShiftException;
+use App\Domain\User\Entity\User;
+use App\Domain\User\Exception\EmailVerificationException;
+use App\Domain\User\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
-use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 use UI\Http\Web\Controller\DefaultController;
 
 class EmailVerificationController extends DefaultController
 {
-    public function __construct(VerifyEmailHelperInterface $verificator, MailerInterface $mailer)
+    public function __construct(
+        UserRepository $repository,
+        VerifyEmailHelperInterface $verificator,
+        MailerInterface $mailer
+    )
     {
         $this->verificator = $verificator;
         $this->mailer = $mailer;
+        $this->repository = $repository;
     }
 
     /**
@@ -26,15 +33,18 @@ class EmailVerificationController extends DefaultController
     public function verifyUserEmail(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $user = $this->getUser();
 
-        // TODO: proper exception
-        $this->verificator->validateEmailConfirmation($request->getUri(), $user->uuid(), $user->email());
+        $user = $this->repository->oneByUuid($this->getUser()->uuid());
 
-        // Mark your user as verified. e.g. switch a User::verified property to true
+        try {
+            $this->verificator->validateEmailConfirmation($request->getUri(), $user->uuid(), $user->email());
 
-        $this->addFlash('success', 'Your e-mail address has been verified.');
+            $user->setEmailVerified();
+            $this->repository->apply();
 
-        return $this->redirectToRoute('app_home');
+            return new JsonResponse(['message' => 'Email Verified Successfully']);
+        } catch (\Exception) {
+            throw new EmailVerificationException();
+        }
     }
 }

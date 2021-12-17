@@ -9,7 +9,7 @@ use App\Domain\User\Application\Query\Auth\GetToken\GetTokenQuery;
 use App\Domain\User\Exception\InvalidCredentialsException;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use UI\Http\Rest\Controller\CommandQueryController;
-use UI\Http\Rest\Response\OpenApi;
+use UI\Http\Rest\Response\OpenApiResponse;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use OpenApi\Annotations as OA;
@@ -61,7 +61,7 @@ final class AuthController extends CommandQueryController
      * @throws InvalidCredentialsException
      * @throws Throwable
      */
-    public function __invoke(Request $request): OpenApi
+    public function __invoke(Request $request): OpenApiResponse
     {
         $username = $request->get('username');
 
@@ -74,11 +74,11 @@ final class AuthController extends CommandQueryController
 
         $this->handle($signInCommand);
 
-        return OpenApi::fromPayload(
+        return OpenApiResponse::fromPayload(
             [
                 'token' => $this->ask(new GetTokenQuery($username)),
             ],
-            OpenApi::HTTP_OK
+            OpenApiResponse::HTTP_OK
         );
     }
 }

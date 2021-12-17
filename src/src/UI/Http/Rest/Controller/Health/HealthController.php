@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace UI\Http\Rest\Controller\Health;
 
 use App\Shared\Infrastructure\Event\ReadModel\ElasticSearchEventRepository;
-use App\Domain\User\Repository\UserRepository;
-use UI\Http\Rest\Response\OpenApi;
+use UI\Http\Rest\Response\OpenApiResponse;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,7 +41,7 @@ final class HealthController
      *
      * @OA\Tag(name="Health")
      */
-    public function __invoke(Request $request): OpenApi
+    public function __invoke(Request $request): OpenApiResponse
     {
         $elastic = null;
         $mysql = null;
@@ -51,10 +50,10 @@ final class HealthController
             true === $elastic = $this->elasticSearchEventRepository->isHealthly() &&
             true === $mysql = $this->mysqlReadModelUserRepository->isHealthy()
         ) {
-            return OpenApi::empty(200);
+            return OpenApiResponse::empty(200);
         }
 
-        return OpenApi::fromPayload(
+        return OpenApiResponse::fromPayload(
             [
                 'Healthy services' => [
                     'Elastic' => $elastic,

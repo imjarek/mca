@@ -30,9 +30,9 @@ final class PartnerRepository extends SqlRepository implements CheckPartnerByInn
         $this->add($partner);
     }
 
-    public function get(UuidInterface $uuid): User
+    public function get(UuidInterface $uuid): Partner
     {
-        /** @var User $partner */
+        /** @var Partner $partner */
         $partner = $this->oneByUuid($uuid->toString());
 
         return $partner;
@@ -50,7 +50,7 @@ final class PartnerRepository extends SqlRepository implements CheckPartnerByInn
      * @throws NotFoundException
      * @throws NonUniqueResultException
      */
-    public function oneByUuid(UuidInterface $uuid): UserView
+    public function oneByUuid(UuidInterface $uuid): PartnerView
     {
         $qb = $this->repository
             ->createQueryBuilder('partner')
@@ -65,12 +65,12 @@ final class PartnerRepository extends SqlRepository implements CheckPartnerByInn
      */
     public function existsInn(Inn $inn): ?UuidInterface
     {
-        $userId = $this->getPartnerByInnQueryBuilder($inn)
+        $partner = $this->getPartnerByInnQueryBuilder($inn)
             ->select('partner.uuid')
             ->getQuery()
             ->getOneOrNullResult(AbstractQuery::HYDRATE_ARRAY);
 
-        return $userId['uuid'] ?? null;
+        return $partner['uuid'] ?? null;
     }
 
     /**
@@ -105,27 +105,5 @@ final class PartnerRepository extends SqlRepository implements CheckPartnerByInn
     public function add(User $userModel): void
     {
         $this->register($userModel);
-    }
-
-    /**
-     * @throws NotFoundException
-     * @throws NonUniqueResultException
-     *
-     * @return array{0: \Ramsey\Uuid\UuidInterface, 1: Email, 2: \App\User\Domain\ValueObject\Auth\HashedPassword}
-     */
-    public function getCredentialsByEmail(Email $email): array
-    {
-        $qb = $this->repository
-            ->createQueryBuilder('user')
-            ->where('user.credentials.email = :email')
-            ->setParameter('email', $email->toString());
-
-        $user = $this->oneOrException($qb, AbstractQuery::HYDRATE_ARRAY);
-
-        return [
-            $user['uuid'],
-            $user['credentials.email'],
-            $user['credentials.hashedPassword'],
-        ];
     }
 }

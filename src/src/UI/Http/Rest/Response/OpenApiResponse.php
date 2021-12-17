@@ -8,7 +8,7 @@ use App\Shared\Application\Query\Collection;
 use App\Shared\Application\Query\Item;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class OpenApi extends JsonResponse
+class OpenApiResponse extends JsonResponse
 {
     private function __construct($data = null, int $status = self::HTTP_OK, array $headers = [], bool $json = false)
     {

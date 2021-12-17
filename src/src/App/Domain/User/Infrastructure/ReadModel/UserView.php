@@ -73,7 +73,7 @@ class UserView implements SerializableReadModel
         return [
             'uuid' => $this->getId(),
             'credentials' => [
-                'email' => (string) $this->credentials->email,
+                'email' => (string) $this->mail(),
             ],
         ];
     }
@@ -85,7 +85,7 @@ class UserView implements SerializableReadModel
 
     public function email(): string
     {
-        return (string) $this->credentials->email;
+        return (string) $this->email();
     }
 
     public function changeEmail(Email $email): void

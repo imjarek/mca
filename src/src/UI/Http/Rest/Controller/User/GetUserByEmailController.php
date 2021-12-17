@@ -7,7 +7,7 @@ namespace UI\Http\Rest\Controller\User;
 use App\Shared\Application\Query\Item;
 use App\Domain\User\Application\Query\User\FindByEmail\FindByEmailQuery;
 use UI\Http\Rest\Controller\QueryController;
-use UI\Http\Rest\Response\OpenApi;
+use UI\Http\Rest\Response\OpenApiResponse;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -50,7 +50,7 @@ final class GetUserByEmailController extends QueryController
      * @throws AssertionFailedException
      * @throws Throwable
      */
-    public function __invoke(string $email): OpenApi
+    public function __invoke(string $email): OpenApiResponse
     {
         Assertion::email($email, "Email can\'t be empty or invalid");
 

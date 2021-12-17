@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Partner\Application\Command;
 
+use App\Domain\User\Entity\User;
 use App\Shared\Application\Command\CommandInterface;
 use App\Domain\Partner\ValueObject\Inn;
 use Assert\AssertionFailedException;
@@ -15,6 +16,7 @@ final class CreatePartnerCommand implements CommandInterface
     /** @psalm-readonly */
     public UuidInterface $uuid;
     public Inn $inn;
+    public User $user;
     /**
      * @throws AssertionFailedException
      */
@@ -28,7 +30,8 @@ final class CreatePartnerCommand implements CommandInterface
         string $bankAccount,
         string $regionCode,
         string $legalAddress,
-        string $actualAdress
+        string $actualAdress,
+        User $user
     )
     {
         $this->uuid = $uuid;
@@ -41,5 +44,6 @@ final class CreatePartnerCommand implements CommandInterface
         $this->regionCode  = $regionCode;
         $this->legalAddress = $legalAddress;
         $this->actualAdress = $actualAdress;
+        $this->user = $user;
     }
 }

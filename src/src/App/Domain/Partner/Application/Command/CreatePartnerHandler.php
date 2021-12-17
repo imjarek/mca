@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Partner\Application\Command;
 
 use App\Domain\Partner\Specification\UniqueInnSpecification;
+use App\Domain\User\Entity\User;
 use App\Shared\Application\Command\CommandHandlerInterface;
 use App\Shared\Domain\Exception\DateTimeException;
 use App\Domain\Partner\Repository\PartnerRepositoryInterface;
@@ -45,5 +46,9 @@ final class CreatePartnerHandler implements CommandHandlerInterface
         );
 
         $this->partnerRepository->store($partner);
+
+        if ($command->user instanceof User) {
+
+        }
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Partner\Event;
 
 use App\Domain\Partner\ValueObject\Inn;
+use App\Domain\User\Entity\User;
 use App\Shared\Domain\Exception\DateTimeException;
 use App\Shared\Domain\ValueObject\DateTime;
 use Assert\Assertion;
@@ -18,6 +19,7 @@ final class PartnerWasCreated implements Serializable
     public UuidInterface $uuid;
     public Inn $inn;
     public DateTime $createdAt;
+    public User $user;
 
     public function __construct(
         UuidInterface $uuid,
@@ -30,7 +32,7 @@ final class PartnerWasCreated implements Serializable
         $bankAccount,
         $regionCode,
         $legalAddress,
-        $actualAddress,
+        $actualAddress
     )
     {
         $this->uuid          = $uuid;

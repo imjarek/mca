@@ -58,7 +58,8 @@ class UserInfoController extends QueryController
                     'id' => $user->uuid(),
                     'email' => $user->email(),
                     'first_name' => $user->getFirstName(),
-                    'last_name' => $user->getLastName()
+                    'last_name' => $user->getLastName(),
+                    'email_verified' => $user->getEmailVerified()
                 ];
             return $this->json(Item::fromPayload($user->uuid(), UserView::TYPE, $userData));
         }

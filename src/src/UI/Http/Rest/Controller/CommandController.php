@@ -6,9 +6,10 @@ namespace UI\Http\Rest\Controller;
 
 use App\Shared\Application\Command\CommandBusInterface;
 use App\Shared\Application\Command\CommandInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Throwable;
 
-abstract class CommandController
+abstract class CommandController extends AbstractController
 {
     private CommandBusInterface $commandBus;
 
