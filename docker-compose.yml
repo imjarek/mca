@@ -10,6 +10,7 @@ services:
     environment:
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         POSTGRES_DB: ${POSTGRES_DB}
+        PGDATA: /var/lib/postgresql/data/pgdata
     ports:
         - 15432:5432
   php-fpm:

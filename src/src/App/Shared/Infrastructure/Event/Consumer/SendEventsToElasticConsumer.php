@@ -19,16 +19,15 @@ class SendEventsToElasticConsumer implements MessageSubscriberInterface
 
     public function __invoke(DomainMessage $event): void
     {
-        // we need to switch to Kafka
-        //$this->eventElasticRepository->store($event);
+        $this->eventElasticRepository->store($event);
     }
 
     public static function getHandledMessages(): iterable
     {
-//        yield DomainMessage::class => [
-//            'from_transport' => 'events',
-//            'bus' => 'messenger.bus.event.async',
-//        ];
+        yield DomainMessage::class => [
+            'from_transport' => 'events',
+            'bus' => 'messenger.bus.event.async',
+        ];
         yield DomainMessage::class;
     }
 }

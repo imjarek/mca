@@ -12,4 +12,7 @@ return [
     Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
     Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
     SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle::class => ['all' => true],
+    Enqueue\Bundle\EnqueueBundle::class => ['all' => true],
+    Enqueue\MessengerAdapter\Bundle\EnqueueAdapterBundle::class => ['all' => true],
+    Koco\Kafka\KocoKafkaBundle::class => ['all' => true],
 ];

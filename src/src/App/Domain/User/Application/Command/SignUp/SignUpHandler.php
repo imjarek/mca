@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Application\Command\SignUp;
 
+use App\Core\Shared\Application\Messaging\EventBusInterface;
+use App\Core\Shared\Infrastructure\Bus\EventBus;
+use App\Domain\User\Event\UserSignedUp;
 use App\Shared\Application\Command\CommandHandlerInterface;
 use App\Shared\Domain\Exception\DateTimeException;
 use App\Domain\User\Repository\UserRepositoryInterface;
@@ -18,14 +21,18 @@ final class SignUpHandler implements CommandHandlerInterface
 
     private UniqueEmailSpecificationInterface $uniqueEmailSpecification;
 
+    private EventBusInterface $eventBus;
+
     public function __construct(
         UserRepositoryInterface $userRepository,
         UniqueEmailSpecificationInterface $uniqueEmailSpecification,
-        IEmailVerificationService $verificator
+        IEmailVerificationService $verificator,
+        EventBusInterface $eventBus
     ) {
         $this->userRepository = $userRepository;
         $this->uniqueEmailSpecification = $uniqueEmailSpecification;
         $this->verificator = $verificator;
+        $this->eventBus = $eventBus;
     }
 
     /**

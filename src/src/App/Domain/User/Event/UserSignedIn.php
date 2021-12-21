@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Domain\User\Event;
 
 use App\Domain\User\ValueObject\Email;
+use App\Shared\Infrastructure\DomainMessage;
 use App\Shared\Infrastructure\Persistence\ReadModel\Serializable;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-final class UserSignedIn implements Serializable
+final class UserSignedIn extends DomainMessage implements Serializable
 {
     public Email $email;
 

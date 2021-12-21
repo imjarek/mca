@@ -1,0 +1,11 @@
+enqueue:
+  default:
+    transport:
+      dsn: "rdkafka://"
+      global:
+        group.id: 'mca'
+      topic:
+        auto.offset.reset: beginning
+      commit_async: true
+    client: ~
+#      traceable_producer: true

@@ -7,8 +7,6 @@ parameters:
             - '%env(ELASTIC_HOST)%'
 
     env(ELASTIC_HOST): 'elasticsearch:9200'
-    env(DATABASE_URL): 'mysql://root:api@mysql:3306/api?serverVersion=8.0'
-
     exception_to_status:
         InvalidArgumentException: 400
         App\Domain\User\Exception\InvalidCredentialsException: 401
@@ -24,9 +22,8 @@ services:
         public: false
         bind:
             $elasticConfig: '%elastic%'
-            $eventBus: '@broadway.event_handling.event_bus'
+            $eventBus: '@messenger.bus.event.async'
             $eventStore: '@Broadway\EventStore\Dbal\DBALEventStore'
-
     _instanceof:
         App\Shared\Application\Command\CommandHandlerInterface:
             public: true

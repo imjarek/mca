@@ -2,7 +2,7 @@ doctrine:
     dbal:
         schema_filter: ~^(?!event)~ # this will ignore broadway event store table
         url: '%env(resolve:DATABASE_URL)%'
-        driver: 'pdo_postgresql'
+        driver: 'pdo_pgsql'
         default_table_options:
             charset: utf8
             collate: utf8_unicode_ci

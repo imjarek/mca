@@ -14,8 +14,9 @@ use Assert\AssertionFailedException;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use App\Shared\Infrastructure\Persistence\ReadModel\Serializable;
+use Symfony\Contracts\EventDispatcher\Event;
 
-final class UserWasCreated implements Serializable
+final class UserWasCreated extends Event implements Serializable
 {
     public UuidInterface $uuid;
 

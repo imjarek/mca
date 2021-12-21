@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Shared\Infrastructure\Event\Publisher;
 
 use App\Shared\Infrastructure\Bus\AsyncEvent\MessengerAsyncEventBus;
+use App\Shared\Infrastructure\DomainMessage;
+use App\Shared\Infrastructure\EventListener;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;

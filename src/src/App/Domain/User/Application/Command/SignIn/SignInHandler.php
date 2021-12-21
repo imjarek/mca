@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Application\Command\SignIn;
 
+use App\Core\Shared\Application\Messaging\EventBusInterface;
+use App\Domain\User\Event\UserSignedIn;
 use App\Shared\Application\Command\CommandHandlerInterface;
 use App\Domain\User\Exception\InvalidCredentialsException;
 use App\Domain\User\Repository\CheckUserByEmailInterface;
@@ -17,10 +19,11 @@ final class SignInHandler implements CommandHandlerInterface
 
     private CheckUserByEmailInterface $userCollection;
 
-    public function __construct(UserRepositoryInterface $userStore, CheckUserByEmailInterface $userCollection)
+    public function __construct(UserRepositoryInterface $userStore, CheckUserByEmailInterface $userCollection, $eventBus)
     {
         $this->userStore = $userStore;
         $this->userCollection = $userCollection;
+        $this->eventBus = $eventBus;
     }
 
     public function __invoke(SignInCommand $command): void

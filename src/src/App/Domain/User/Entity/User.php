@@ -14,11 +14,16 @@ use App\Domain\User\Event\UserSignedIn;
 use App\Domain\User\Event\UserWasCreated;
 use App\Domain\User\Exception\InvalidCredentialsException;
 use App\Shared\Infrastructure\AggregateRoot;
+use App\Shared\Infrastructure\Bus\AsyncEvent\MessengerAsyncEventBus;
+use App\Shared\Infrastructure\Event\Publisher\AsyncEventPublisher;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use Doctrine\ORM\Mapping as ORM;
 
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Messenger\MessageBus;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @ORM\Entity()
@@ -132,6 +137,12 @@ class User extends AggregateRoot
 
         $this->setEmail($event->email);
         $this->setUpdatedAt($event->updatedAt);
+    }
+
+    protected function applyUserSignedIn($event)
+    {
+        $dispatcher = new EventDispatcher();
+        $dispatcher->dispatch($event);
     }
 
     private function setCredentials(Email $email, HashedPassword $password)
