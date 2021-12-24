@@ -5,12 +5,12 @@ include:
   - project: 'gigwork/ci/templates'
     ref: master
     file: '.job_base.yml'
-  - project: 'gigwork/ci/templates/ssh/'
+  - project: 'gigwork/ci/templates'
     ref: master
-    file: '.add_ssh_known_host.yml'  
-  - project: 'gigwork/ci/templates/ssh/'
+    file: 'ssh/.add_ssh_known_host.yml'  
+  - project: 'gigwork/ci/templates'
     ref: master
-    file: '.init_ssh.yml'      
+    file: 'ssh/.init_ssh.yml'      
 
 stages:
   - Build
