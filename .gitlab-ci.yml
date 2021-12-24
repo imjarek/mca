@@ -27,7 +27,6 @@ Build:
   variables:
     DATABASE_URL: ""
   script:
-    - cd src
     - touch .env
     - composer install
   artifacts:
