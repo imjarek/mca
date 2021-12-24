@@ -24,10 +24,10 @@ Build:
   artifacts:
     expire_in: 30 min
     paths:
-      - .env
-      - var/
-      - vendor/
-      - public/
+      - src/.env
+      - src/var/
+      - src/vendor/
+      - src/public/
 
 
 Functional:
