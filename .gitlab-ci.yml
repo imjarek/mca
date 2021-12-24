@@ -47,6 +47,7 @@ Functional:
     JWT_PASSPHRASE: "secret"
     APP_ENV: "test"
   script:
+    - cd src
     - symfony php bin/console --no-interaction doctrine:migrations:migrate
     - symfony php bin/console lexik:jwt:generate-keypair
     - export XDEBUG_MODE=off
