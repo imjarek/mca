@@ -69,7 +69,7 @@ Build:
 
 .job_phpunit: &job_phpunit
   <<: *job_base
-  image: registry.gigwork.ru/gigwork/ci/lk-backend/php-80
+  image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
   stage: Test
   when: always
   script:
@@ -114,7 +114,7 @@ Build:
 
 PhpUnit 8.0:
   <<: *job_phpunit
-  image: registry.gigwork.ru/gigwork/ci/lk-backend/php-80
+  image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
   artifacts:
     reports:
       cobertura: coverage.xml
