@@ -2,6 +2,9 @@ include:
   - project: 'gigwork/ci/templates'
     ref: master
     file: '.release_docker_image.yml'
+  - project: 'gigwork/ci/templates'
+    ref: master
+    file: '.job_base.yml'
 
 stages:
   - Build
@@ -39,13 +42,6 @@ Build:
 
 ################## Tests and code analysis ##################
 ######################## Parts of Jobs ######################
-
-.job_base: &job_base
-  before_script:
-    - echo -e "\e[43m\e[30m Время старта:" `date '+%Y-%m-%d %H:%M:%S'` " \e[0m"
-    - echo -e "\e[43m\e[30m Задача '$CI_BUILD_NAME', Ветка '$CI_BUILD_REF_NAME', Стадия '$CI_BUILD_STAGE', Код сборки '$CI_PIPELINE_IID' \e[0m"
-  after_script:
-    - echo -e "\e[43m\e[30m Время окончания:" `date '+%Y-%m-%d %H:%M:%S'` " \e[0m"
 
 .script_init_ssh: &script_init_ssh |
   echo -e "\e[43m\e[30m Настраиваем SSH \e[0m"
