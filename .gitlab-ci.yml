@@ -7,7 +7,10 @@ include:
     file: '.job_base.yml'
   - project: 'gigwork/ci/templates'
     ref: master
-    file: '.add_ssh_known_host.yml'    
+    file: '.add_ssh_known_host.yml'  
+  - project: 'gigwork/ci/templates'
+    ref: master
+    file: '.init_ssh.yml'      
 
 stages:
   - Build
@@ -47,23 +50,6 @@ Build:
 ################## Tests and code analysis ##################
 ######################## Parts of Jobs ######################
 
-.script_init_ssh: &script_init_ssh |
-  echo -e "\e[43m\e[30m Настраиваем SSH \e[0m"
-  rm -rf ~/.ssh
-  mkdir -p ~/.ssh
-  cat $_SSH_PRIVATE_KEY | tr -d '\r' > ~/.ssh/id_rsa
-  cat $_SSH_PUBLIC_KEY | tr -d '\r' > ~/.ssh/id_rsa.pub
-  touch ~/.ssh/known_hosts
-  echo -e "Host *\n    StrictHostKeyChecking no\n    UserKnownHostsFile /dev/null\n    LogLevel ERROR" > ~/.ssh/config
-  chmod 700 ~/.ssh
-  chmod 600 ~/.ssh/id_rsa
-  chmod 644 ~/.ssh/id_rsa.pub
-  chmod 600 ~/.ssh/known_hosts
-  sudo chmod 400 ~/.ssh/config
-
-
-
-
 .job_phpunit: &job_phpunit
   extends: .job_base
   image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
@@ -83,7 +69,7 @@ Build:
   script:
     - _INTRANET=https://gigwork.space
     - _INTRANET_HOST=portal-ya1.gigwork
-    - *script_init_ssh
+    - !reference [.init_ssh, script]
     - ADD_SSH_HOST=${_INTRANET_HOST}
     - !reference [.add_ssh_known_host, script]
     - echo -e "\e[42m\e[30m Создаем отчет по покрытию \e[0m"
@@ -119,7 +105,7 @@ Build:
   script:
     - _INTRANET=https://gigwork.space
     - _INTRANET_HOST=portal-ya1.gigwork
-    - *script_init_ssh
+    - !reference [.init_ssh, script]
     - ADD_SSH_HOST=${_INTRANET_HOST}
     - !reference [.add_ssh_known_host, script]
     - echo -e "\e[43m\e[30m Проверяем на соответсвие кода верси PHP v.${VERSION} \e[0m"
@@ -140,7 +126,7 @@ Build:
   script:
     - _INTRANET=https://gigwork.space
     - _INTRANET_HOST=portal-ya1.gigwork
-    - *script_init_ssh
+    - !reference [.init_ssh, script]
     - ADD_SSH_HOST=${_INTRANET_HOST}
     - !reference [.add_ssh_known_host, script]
     - echo -e "\e[43m\e[30m Проверяем на соответсвие кода стандарту ${STYLE} \e[0m"
