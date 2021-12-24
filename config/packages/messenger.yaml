@@ -34,7 +34,7 @@ framework:
                     flushTimeout: 10000
                     flushRetries: 5
                     topic:
-                        name: 'events'
+                        name: 'msa-messages-test'
                     kafka_conf:
                         security.protocol: '%env(KAFKA_PROTOCOL)%'
                         ssl.ca.location: '%kernel.project_dir%/config/kafka/YandexCA.crt'
@@ -54,14 +54,14 @@ framework:
                         name: "users"
                         binding_keys: ['#.User.#']
                     topic:
-                        name: 'users'
+                        name: 'msa-messages-test'
                     kafka_conf:
                         security.protocol: '%env(KAFKA_PROTOCOL)%'
                         ssl.ca.location: '%kernel.project_dir%/config/kafka/YandexCA.crt'
-#                        sasl.username: '%env(KAFKA_USER)%'
+                        sasl.username: '%env(KAFKA_USER)%'
                         sasl.password: '%env(KAFKA_PASS)%'
                         sasl.mechanisms: '%env(KAFKA_MECHANISM)%'
-#                        group.id: '%env(KAFKA_GROUP)%'
+                        group.id: '%env(KAFKA_GROUP)%'
             failed:
                 dsn: "%env(KAFKA_HOST)%?queue_name=failed"
                 retry_strategy:
@@ -74,14 +74,14 @@ framework:
                         name: "users"
                         binding_keys: [ '#.User.#' ]
                     topic:
-                        name: 'failed'
+                        name: 'msa-messages-test'
                     kafka_conf:
                         security.protocol: '%env(KAFKA_PROTOCOL)%'
                         ssl.ca.location: '%kernel.project_dir%/config/kafka/YandexCA.crt'
-                        #                        sasl.username: '%env(KAFKA_USER)%'
+                        sasl.username: '%env(KAFKA_USER)%'
                         sasl.password: '%env(KAFKA_PASS)%'
                         sasl.mechanisms: '%env(KAFKA_MECHANISM)%'
-#                        group.id: '%env(KAFKA_GROUP)%'
+                        group.id: '%env(KAFKA_GROUP)%'
             producer:
                 dsn: '%env(KAFKA_HOST)%'
                 # serializer: App\Infrastructure\Messenger\MySerializer
@@ -89,7 +89,7 @@ framework:
                     flushTimeout: 10000
                     flushRetries: 5
                     topic:
-                        name: 'events'
+                        name: 'msa-messages-test'
                     kafka_conf:
                         security.protocol: 'sasl_ssl'
                         ssl.ca.location: '%kernel.project_dir%/config/kafka/YandexCA.crt'

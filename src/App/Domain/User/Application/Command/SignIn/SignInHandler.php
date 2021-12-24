@@ -11,7 +11,9 @@ use App\Domain\User\Exception\InvalidCredentialsException;
 use App\Domain\User\Repository\CheckUserByEmailInterface;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
+use App\Shared\Infrastructure\DomainMessage;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class SignInHandler implements CommandHandlerInterface
 {
@@ -35,6 +37,8 @@ final class SignInHandler implements CommandHandlerInterface
         $user->signIn($command->plainPassword);
 
         $this->userStore->store($user);
+
+        $this->eventBus->dispatch(new DomainMessage($user));
     }
 
     private function uuidFromEmail(Email $email): UuidInterface

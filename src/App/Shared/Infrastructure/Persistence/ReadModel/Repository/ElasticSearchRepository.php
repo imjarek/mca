@@ -14,16 +14,9 @@ abstract class ElasticSearchRepository
 {
     private Client $client;
 
-    public function __construct(array $elasticConfig, LoggerInterface $elasticsearchLogger = null)
+    public function __construct()
     {
         $defaultConfig = [];
-
-        if ($elasticsearchLogger) {
-            $defaultConfig['logger'] = $elasticsearchLogger;
-            $defaultConfig['tracer'] = $elasticsearchLogger;
-        }
-
-        $this->client = ClientBuilder::fromConfig(\array_replace($defaultConfig, $elasticConfig), true);
     }
 
     abstract protected function index(): string;

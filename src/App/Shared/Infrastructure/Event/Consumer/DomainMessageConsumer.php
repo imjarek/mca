@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\User\Infrastructure\Projections;
+namespace App\Shared\Infrastructure\Event\Consumer;
 
 use App\User\Domain\Event\UserSignedIn;
 use App\Shared\Infrastructure\Bus\AsyncEvent\MessengerAsyncEventBus;
@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
 /**
- * Class ConsoleProjectionFactory
+ * Class DomainMessageConsumer
  *
  * @description This is a dummy example about how to handle custom Events
  *  In this case all events sent to users transport will be consumed here.
@@ -30,7 +30,7 @@ use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
  *
  * @see MessengerAsyncEventBus::handle
  */
-final class ConsoleProjectionFactory implements MessageSubscriberInterface
+final class DomainMessageConsumer implements MessageSubscriberInterface
 {
     private LoggerInterface $logger;
 
@@ -49,7 +49,7 @@ final class ConsoleProjectionFactory implements MessageSubscriberInterface
     public static function getHandledMessages(): iterable
     {
         yield DomainMessage::class => [
-            'from_transport' => 'users',
+            'from_transport' => 'events',
             'bus' => 'messenger.bus.event.async',
         ];
     }
