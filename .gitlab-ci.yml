@@ -5,6 +5,9 @@ include:
   - project: 'gigwork/ci/templates'
     ref: master
     file: '.job_base.yml'
+  - project: 'gigwork/ci/templates'
+    ref: master
+    file: '.add_ssh_known_host.yml'    
 
 stages:
   - Build
@@ -58,9 +61,7 @@ Build:
   chmod 600 ~/.ssh/known_hosts
   sudo chmod 400 ~/.ssh/config
 
-.script_add_ssh_host: &script_add_ssh_host |
-  ssh-keyscan -H "${ADD_SSH_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
-  echo -e "\e[42m\e[30m Добаляем SSH host ${ADD_SSH_HOST} \e[0m"
+
 
 
 .job_phpunit: &job_phpunit
@@ -84,7 +85,7 @@ Build:
     - _INTRANET_HOST=portal-ya1.gigwork
     - *script_init_ssh
     - ADD_SSH_HOST=${_INTRANET_HOST}
-    - *script_add_ssh_host
+    - !reference [.add_ssh_known_host, script]
     - echo -e "\e[42m\e[30m Создаем отчет по покрытию \e[0m"
     - LOCAL_REPORT_PATH=/tmp/phpunit
     - LOCAL_REPORT_FILE=/tmp/phpunit_${CI_COMMIT_SHA}.tar.gz
@@ -120,7 +121,7 @@ Build:
     - _INTRANET_HOST=portal-ya1.gigwork
     - *script_init_ssh
     - ADD_SSH_HOST=${_INTRANET_HOST}
-    - *script_add_ssh_host
+    - !reference [.add_ssh_known_host, script]
     - echo -e "\e[43m\e[30m Проверяем на соответсвие кода верси PHP v.${VERSION} \e[0m"
     - LOCAL_REPORT_FILE=./${VERSION}.json
     - touch ${LOCAL_REPORT_FILE}
@@ -141,7 +142,7 @@ Build:
     - _INTRANET_HOST=portal-ya1.gigwork
     - *script_init_ssh
     - ADD_SSH_HOST=${_INTRANET_HOST}
-    - *script_add_ssh_host
+    - !reference [.add_ssh_known_host, script]
     - echo -e "\e[43m\e[30m Проверяем на соответсвие кода стандарту ${STYLE} \e[0m"
     - LOCAL_REPORT_FILE=./${STYLE}.json
     - touch ${LOCAL_REPORT_FILE}
