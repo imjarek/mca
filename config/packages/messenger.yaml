@@ -1,0 +1,118 @@
+framework:
+    messenger:
+        routing:
+            'App\Shared\Infrastructure\DomainMessage': 'events'
+        default_bus: messenger.bus.command
+        failure_transport: failed
+
+        buses:
+            messenger.bus.command:
+                default_middleware: false
+                middleware:
+                    - handle_message
+
+            messenger.bus.query:
+                default_middleware: false
+                middleware:
+                    - handle_message
+
+            messenger.bus.event.async:
+                default_middleware: allow_no_handlers
+
+        transports:
+            events:
+                dsn: "%env(KAFKA_HOST)%"
+                retry_strategy:
+                    delay: 2000
+                    max_retries: 5
+                    multiplier: 2
+                    max_delay: 0
+                options:
+                    queue:
+                        name: "events"
+                        binding_keys: ['#']
+                    flushTimeout: 10000
+                    flushRetries: 5
+                    topic:
+                        name: 'msa-messages-test'
+                    kafka_conf:
+                        security.protocol: '%env(KAFKA_PROTOCOL)%'
+                        ssl.ca.location: '%kernel.project_dir%/config/kafka/YandexCA.crt'
+                        sasl.username: '%env(KAFKA_USER)%'
+                        sasl.password: '%env(KAFKA_PASS)%'
+                        sasl.mechanisms: '%env(KAFKA_MECHANISM)%'
+                        group.id: '%env(KAFKA_GROUP)%'
+            users:
+                dsn: "%env(KAFKA_HOST)%"
+                retry_strategy:
+                    delay: 2000
+                    max_retries: 5
+                    multiplier: 2
+                    max_delay: 0
+                options:
+                    queue:
+                        name: "users"
+                        binding_keys: ['#.User.#']
+                    topic:
+                        name: 'msa-messages-test'
+                    kafka_conf:
+                        security.protocol: '%env(KAFKA_PROTOCOL)%'
+                        ssl.ca.location: '%kernel.project_dir%/config/kafka/YandexCA.crt'
+                        sasl.username: '%env(KAFKA_USER)%'
+                        sasl.password: '%env(KAFKA_PASS)%'
+                        sasl.mechanisms: '%env(KAFKA_MECHANISM)%'
+                        group.id: '%env(KAFKA_GROUP)%'
+            failed:
+                dsn: "%env(KAFKA_HOST)%?queue_name=failed"
+                retry_strategy:
+                    delay: 2000
+                    max_retries: 5
+                    multiplier: 2
+                    max_delay: 0
+                options:
+                    queue:
+                        name: "users"
+                        binding_keys: [ '#.User.#' ]
+                    topic:
+                        name: 'msa-messages-test'
+                    kafka_conf:
+                        security.protocol: '%env(KAFKA_PROTOCOL)%'
+                        ssl.ca.location: '%kernel.project_dir%/config/kafka/YandexCA.crt'
+                        sasl.username: '%env(KAFKA_USER)%'
+                        sasl.password: '%env(KAFKA_PASS)%'
+                        sasl.mechanisms: '%env(KAFKA_MECHANISM)%'
+                        group.id: '%env(KAFKA_GROUP)%'
+            producer:
+                dsn: '%env(KAFKA_HOST)%'
+                # serializer: App\Infrastructure\Messenger\MySerializer
+                options:
+                    flushTimeout: 10000
+                    flushRetries: 5
+                    topic:
+                        name: 'msa-messages-test'
+                    kafka_conf:
+                        security.protocol: 'sasl_ssl'
+                        ssl.ca.location: '%kernel.project_dir%/config/kafka/YandexCA.crt'
+#                        sasl.username: '%env(KAFKA_USER)%'
+                        sasl.password: '%env(KAFKA_PASS)%'
+                        sasl.mechanisms: '%env(KAFKA_MECHANISM)%'
+#                        group.id: '%env(KAFKA_GROUP)%'
+#            consumer:
+#                dsn: '%env(KAFKA_HOST)%'
+#                # serializer: App\Infrastructure\Messenger\MySerializer
+#                options:
+#                    commitAsync: true
+#                    receiveTimeout: 10000
+#                    topic:
+#                        name: "events"
+#                    kafka_conf:
+#                        enable.auto.offset.store: 'false'
+#                        group.id: 'my-group-id' # should be unique per consumer
+#                        security.protocol: 'sasl_ssl'
+#                        ssl.ca.location: '%kernel.project_dir%/config/kafka/ca.pem'
+#                        sasl.username: '%env(KAFKA_SASL_USERNAME)%'
+#                        sasl.password: '%env(KAFKA_SASL_PASSWORD)%'
+#                        sasl.mechanisms: 'SCRAM-SHA-256'
+#                        max.poll.interval.ms: '45000'
+#                    topic_conf:
+#                        auto.offset.reset: 'earliest'

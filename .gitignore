@@ -1,4 +1,16 @@
-.env
-logs/*
-docker/logs/*
+
+###> symfony/framework-bundle ###
+.env.local
+.env.local.php
+.env.*.local
+config/secrets/prod/prod.decrypt.private.php
+public/bundles/
+var/
+vendor/
+###< symfony/framework-bundle ###
+/docker/db/
+/docker/logs/
+###> lexik/jwt-authentication-bundle ###
+config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
 
