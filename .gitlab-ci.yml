@@ -19,6 +19,8 @@ stages:
   - Release
   - Deploy
 
+image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
+
 variables:
   KAFKA_HOST: ""
   KAFKA_PORT: ""
@@ -32,7 +34,6 @@ variables:
 
 Build:
   extends: .job_base
-  image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
   stage: Build
   variables:
     DATABASE_URL: ""
@@ -52,7 +53,6 @@ Build:
 
 .job_phpunit: &job_phpunit
   extends: .job_base
-  image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
   stage: Test
   when: always
   script:
@@ -95,7 +95,6 @@ Build:
 
 .job_phpcs: &job_phpcs
   extends: .job_base
-  image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
   stage: Report
   when: manual
   needs: []
@@ -147,13 +146,11 @@ Build:
 
 PhpUnit 8.0:
   <<: *job_phpunit
-  image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
   artifacts:
     reports:
       cobertura: coverage.xml
 
 Migrations:
-  image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
   stage: Test
   services:
     - name: postgres:13.4
