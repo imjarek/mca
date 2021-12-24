@@ -3,7 +3,6 @@
   docker build -t ${CI_REGISTRY_IMAGE}${BACKEND_STATIC_IMAGE_PATH}:$CI_COMMIT_REF_NAME --build-arg APP_VERSION=${CI_COMMIT_REF_NAME} --build-arg CI_COMMIT_SHA=${CI_COMMIT_SHA} -f $DOCKERFILE_PATH .
   docker push ${CI_REGISTRY_IMAGE}${BACKEND_STATIC_IMAGE_PATH}:$CI_COMMIT_REF_NAME
 
-
 stages:
   - Build
   - Test
@@ -34,36 +33,97 @@ Build:
   artifacts:
     expire_in: 30 min
     paths:
-      - src/.env
-      - src/var/
-      - src/vendor/
-      - src/public/
+      - .env
+      - var/
+      - vendor/
+      - public/
+
+################## Tests and code analysis ##################
+######################## Parts of Jobs ######################
+
+.job_base: &job_base
+  before_script:
+    - echo -e "\e[43m\e[30m Время старта:" `date '+%Y-%m-%d %H:%M:%S'` " \e[0m"
+    - echo -e "\e[43m\e[30m Задача '$CI_BUILD_NAME', Ветка '$CI_BUILD_REF_NAME', Стадия '$CI_BUILD_STAGE', Код сборки '$CI_PIPELINE_IID' \e[0m"
+  after_script:
+    - echo -e "\e[43m\e[30m Время окончания:" `date '+%Y-%m-%d %H:%M:%S'` " \e[0m"
+
+.script_init_ssh: &script_init_ssh |
+  echo -e "\e[43m\e[30m Настраиваем SSH \e[0m"
+  rm -rf ~/.ssh
+  mkdir -p ~/.ssh
+  cat $_SSH_PRIVATE_KEY | tr -d '\r' > ~/.ssh/id_rsa
+  cat $_SSH_PUBLIC_KEY | tr -d '\r' > ~/.ssh/id_rsa.pub
+  touch ~/.ssh/known_hosts
+  echo -e "Host *\n    StrictHostKeyChecking no\n    UserKnownHostsFile /dev/null\n    LogLevel ERROR" > ~/.ssh/config
+  chmod 700 ~/.ssh
+  chmod 600 ~/.ssh/id_rsa
+  chmod 644 ~/.ssh/id_rsa.pub
+  chmod 600 ~/.ssh/known_hosts
+  sudo chmod 400 ~/.ssh/config
+
+.script_add_ssh_host: &script_add_ssh_host |
+  ssh-keyscan -H "${ADD_SSH_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
+  echo -e "\e[42m\e[30m Добаляем SSH host ${ADD_SSH_HOST} \e[0m"
 
 
-Functional:
-  image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
+.job_phpunit: &job_phpunit
+  <<: *job_base
+  image: registry.gigwork.ru/gigwork/ci/lk-backend/php-80
   stage: Test
-  services:
-    - name: postgres:13.4
-      alias: db
-  variables:
-    POSTGRES_DB: "msa-test"
-    POSTGRES_USER: "gigant"
-    POSTGRES_PASSWORD: "gigant"
-    DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"
-    CORS_ALLOW_ORIGIN: "/*/"
-    JWT_SECRET_KEY: "%kernel.project_dir%/config/jwt/private.pem"
-    JWT_PUBLIC_KEY: "%kernel.project_dir%/config/jwt/public.pem"
-    JWT_PASSPHRASE: "secret"
-    APP_ENV: "test"
+  when: always
   script:
-    - cd src
-    - symfony php bin/console --no-interaction doctrine:migrations:migrate
-    - symfony php bin/console lexik:jwt:generate-keypair
-    - export XDEBUG_MODE=off
-    - export APP_ENV=test; symfony php vendor/bin/phpunit --testsuite "Project Test Suite"
+    - php -v
+    - export XDEBUG_MODE=coverage
+    - ./vendor/bin/phpunit --coverage-text --colors=never --testsuite "Php Unit" --coverage-cobertura=coverage.xml
   dependencies:
     - Build
 
+.job_phpunit_coverage: &job_phpunit_coverage
+  <<: *job_phpunit
+  stage: Report
+  when: manual
+  script:
+    - _INTRANET=https://gigwork.space
+    - _INTRANET_HOST=portal-ya1.gigwork
+    - *script_init_ssh
+    - ADD_SSH_HOST=${_INTRANET_HOST}
+    - *script_add_ssh_host
+    - echo -e "\e[42m\e[30m Создаем отчет по покрытию \e[0m"
+    - LOCAL_REPORT_PATH=/tmp/phpunit
+    - LOCAL_REPORT_FILE=/tmp/phpunit_${CI_COMMIT_SHA}.tar.gz
+    - REMOVE_REPORT_PATH=/srv/portal/files/data/phpunit/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}
+    - REMOVE_REPORT_FILE=/srv/portal/phpunit_${CI_COMMIT_SHA}.tar.gz
+    - export XDEBUG_MODE=coverage
+    - ./vendor/bin/phpunit --testsuite "Php Unit" --coverage-text --colors=never --coverage-html=${LOCAL_REPORT_PATH}/html --coverage-xml=${LOCAL_REPORT_PATH}/xml --log-junit=${LOCAL_REPORT_PATH}/log.xml || { ERR=1; true; }
+    - echo "{\"title\":\"${CI_PROJECT_TITLE}\", \"gitlab\":\"${CI_SERVER_URL}\", \"project\":\"${CI_PROJECT_PATH}\", \"name\":\"${CI_PROJECT_NAME}\"}" > ${LOCAL_REPORT_PATH}/info.json
+    - echo -e "\e[42m\e[30m Публикуем отчет по покрытию \e[0m"
+    - tar -cpf ${LOCAL_REPORT_FILE} -C ${LOCAL_REPORT_PATH} ./
+    - rsync --recursive --verbose --checksum --delete --rsh=ssh --rsync-path="sudo -u ${_SSH_SUDOER} rsync" ${LOCAL_REPORT_FILE} "${_SSH_USER}@${_INTRANET_HOST}:${REMOVE_REPORT_FILE}"
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} rm -rf ${REMOVE_REPORT_PATH}"
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} mkdir -p ${REMOVE_REPORT_PATH}"
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} tar -xf ${REMOVE_REPORT_FILE} -C ${REMOVE_REPORT_PATH}"
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} rm ${REMOVE_REPORT_FILE}"
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} /srv/portal/current/cli reports/save --report=phpunit --project=${CI_PROJECT_NAME} --branch=${CI_COMMIT_REF_NAME}"
+    - echo -e "\e[42m Отчет \e[0m ${_INTRANET}/reports/phpunit/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}/"
+    - if [[ "$ERR" == "1" ]]; then exit 1; fi
+  dependencies:
+    - Build
 
+################## Jobs from stage test ##################
+
+PhpUnit 8.0:
+  <<: *job_phpunit
+  image: registry.gigwork.ru/gigwork/ci/lk-backend/php-80
+  artifacts:
+    reports:
+      cobertura: coverage.xml
+
+################## Jobs from stage report ##################
+
+PhpUnit coverage:
+  <<: *job_phpunit_coverage
+  needs: [ "Build" ]
+  except:
+    - schedules
 
