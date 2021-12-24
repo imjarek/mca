@@ -104,10 +104,60 @@ Build:
     - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} tar -xf ${REMOVE_REPORT_FILE} -C ${REMOVE_REPORT_PATH}"
     - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} rm ${REMOVE_REPORT_FILE}"
     - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} /srv/portal/current/cli reports/save --report=phpunit --project=${CI_PROJECT_NAME} --branch=${CI_COMMIT_REF_NAME}"
-    - echo -e "\e[42m Отчет \e[0m ${_INTRANET}/reports/phpunit/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}/"
+    - echo -e "\e[42m Отчет \e[0m ${_INTRANET}/reports/phpunit/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}/report"
     - if [[ "$ERR" == "1" ]]; then exit 1; fi
   dependencies:
     - Build
+
+.job_phpcs: &job_phpcs
+  <<: *job_base
+  image: registry.gigwork.ru/gigwork/ci/lk-backend/php-80
+  stage: Report
+  when: manual
+  needs: []
+
+.job_phpcs_compatibility: &job_phpcs_compatibility
+  <<: *job_phpcs
+  script:
+    - _INTRANET=https://gigwork.space
+    - _INTRANET_HOST=portal-ya1.gigwork
+    - *script_init_ssh
+    - ADD_SSH_HOST=${_INTRANET_HOST}
+    - *script_add_ssh_host
+    - echo -e "\e[43m\e[30m Проверяем на соответсвие кода верси PHP v.${VERSION} \e[0m"
+    - LOCAL_REPORT_FILE=./${VERSION}.json
+    - touch ${LOCAL_REPORT_FILE}
+    - phpcs -p ./src ./tests --extensions=php --basepath=. --standard=${STYLE} --report=json --report-file=${LOCAL_REPORT_FILE} --runtime-set testVersion ${VERSION} || true
+    - REMOVE_REPORT_PATH=/srv/portal/files/data/phpcs_compatibility/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} mkdir -p ${REMOVE_REPORT_PATH}"
+    - rsync --recursive --verbose --checksum --delete --rsh=ssh --rsync-path="sudo -u ${_SSH_SUDOER} rsync" ${LOCAL_REPORT_FILE} "${_SSH_USER}@${_INTRANET_HOST}:${REMOVE_REPORT_PATH}/"
+    - REPORT="<?php return ['title'=>'${CI_PROJECT_TITLE}','subtitle'=>'Совместимость с PHP v.${VERSION}','url'=>'${CI_PROJECT_URL}'];"
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} bash -c \"echo \\\"${REPORT}\\\" > ${REMOVE_REPORT_PATH}/${VERSION}.php\""
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} /srv/portal/current/cli phpcs/transform --in=phpcs_compatibility/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}/${VERSION}.json --out=phpcs_compatibility/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}/${VERSION}"
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} /srv/portal/current/cli reports/save --report=phpcs_compatibility --project=${CI_PROJECT_NAME} --branch=${CI_COMMIT_REF_NAME}"
+    - echo -e "\e[42m Отчет \e[0m ${_INTRANET}/reports/phpcs_compatibility/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}/${VERSION}.html"
+
+.job_phpcs_style: &job_phpcs_style
+  <<: *job_phpcs
+  script:
+    - _INTRANET=https://gigwork.space
+    - _INTRANET_HOST=portal-ya1.gigwork
+    - *script_init_ssh
+    - ADD_SSH_HOST=${_INTRANET_HOST}
+    - *script_add_ssh_host
+    - echo -e "\e[43m\e[30m Проверяем на соответсвие кода стандарту ${STYLE} \e[0m"
+    - LOCAL_REPORT_FILE=./${STYLE}.json
+    - touch ${LOCAL_REPORT_FILE}
+    - phpcs -p ./src ./tests --extensions=php --basepath=. --severity=1 --standard=${STYLE} --report=json --report-file=${LOCAL_REPORT_FILE} || true
+    - REMOVE_REPORT_PATH=/srv/portal/files/data/phpcs_style/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} mkdir -p ${REMOVE_REPORT_PATH}"
+    - rsync --recursive --verbose --checksum --delete --rsh=ssh --rsync-path="sudo -u ${_SSH_SUDOER} rsync" ${LOCAL_REPORT_FILE} "${_SSH_USER}@${_INTRANET_HOST}:${REMOVE_REPORT_PATH}/"
+    - REPORT="<?php return ['title'=>'${CI_PROJECT_TITLE}','subtitle'=>'Сответсвие стандарту ${STYLE}','url'=>'${CI_PROJECT_URL}'];"
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} bash -c \"echo \\\"${REPORT}\\\" > ${REMOVE_REPORT_PATH}/${STYLE}.php\""
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} /srv/portal/current/cli phpcs/transform --in=phpcs_style/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}/${STYLE}.json --out=phpcs_style/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}/${STYLE}"
+    - ssh ${_SSH_USER}@${_INTRANET_HOST} "sudo -u ${_SSH_SUDOER} /srv/portal/current/cli reports/save --report=phpcs_style --project=${CI_PROJECT_NAME} --branch=${CI_COMMIT_REF_NAME}"
+    - echo -e "\e[42m Отчет \e[0m ${_INTRANET}/reports/phpcs_style/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}/${STYLE}.html"
+      
 
 ################## Jobs from stage test ##################
 
@@ -149,4 +199,37 @@ PhpUnit coverage:
   except:
     - schedules
 
+PHP v8.0 compatibility schedule:
+  <<: *job_phpcs_compatibility
+  when: manual
+  except:
+      - schedules
+  variables:
+    STYLE: "PHPCompatibility"
+    VERSION: "8.0"
+
+PHP v8.1 compatibility schedule:
+  <<: *job_phpcs_compatibility
+  when: manual
+  except:
+      - schedules
+  variables:
+    STYLE: "PHPCompatibility"
+    VERSION: "8.1"
+
+PSR2 code syle schedule:
+  <<: *job_phpcs_style
+  when: manual
+  except:
+    - schedules
+  variables:
+    STYLE: "PSR2"
+
+PSR12 code syle schedule:
+  <<: *job_phpcs_style
+  when: manual
+  except:
+    - schedules
+  variables:
+    STYLE: "PSR12"
 
