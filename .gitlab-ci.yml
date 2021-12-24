@@ -1,0 +1,58 @@
+.release_docker_image: &release_docker_image |
+  docker login -u gitlab-ci-token -p ${CI_BUILD_TOKEN} ${CI_REGISTRY}
+  docker build -t ${CI_REGISTRY_IMAGE}${BACKEND_STATIC_IMAGE_PATH}:$CI_COMMIT_REF_NAME --build-arg APP_VERSION=${CI_COMMIT_REF_NAME} --build-arg CI_COMMIT_SHA=${CI_COMMIT_SHA} -f $DOCKERFILE_PATH .
+  docker push ${CI_REGISTRY_IMAGE}${BACKEND_STATIC_IMAGE_PATH}:$CI_COMMIT_REF_NAME
+
+
+stages:
+  - Build
+  - Test
+  - Report
+  - Release
+  - Deploy
+
+
+Build:
+  image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
+  stage: Build
+  variables:
+    DATABASE_URL: ""
+  script:
+    - cd src
+    - touch .env
+    - composer install
+  artifacts:
+    expire_in: 30 min
+    paths:
+      - .env
+      - var/
+      - vendor/
+      - public/
+
+
+Functional:
+  image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
+  stage: Test
+  services:
+    - name: postgres:13.4
+      alias: db
+  variables:
+    POSTGRES_DB: "msa-test"
+    POSTGRES_USER: "gigant"
+    POSTGRES_PASSWORD: "gigant"
+    DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"
+    CORS_ALLOW_ORIGIN: "/*/"
+    JWT_SECRET_KEY: "%kernel.project_dir%/config/jwt/private.pem"
+    JWT_PUBLIC_KEY: "%kernel.project_dir%/config/jwt/public.pem"
+    JWT_PASSPHRASE: "secret"
+    APP_ENV: "test"
+  script:
+    - symfony php bin/console --no-interaction doctrine:migrations:migrate
+    - symfony php bin/console lexik:jwt:generate-keypair
+    - export XDEBUG_MODE=off
+    - export APP_ENV=test; symfony php vendor/bin/phpunit --testsuite "Project Test Suite"
+  dependencies:
+    - Build
+
+
+
