@@ -111,7 +111,7 @@ Build:
 
 .job_phpcs: &job_phpcs
   <<: *job_base
-  image: registry.gigwork.ru/gigwork/ci/lk-backend/php-80
+  image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
   stage: Report
   when: manual
   needs: []
