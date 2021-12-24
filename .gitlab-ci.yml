@@ -118,6 +118,29 @@ PhpUnit 8.0:
     reports:
       cobertura: coverage.xml
 
+Migrations:
+  image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
+  stage: Test
+  services:
+    - name: postgres:13.4
+      alias: db
+  variables:
+    POSTGRES_DB: "msa-test"
+    POSTGRES_USER: "gigant"
+    POSTGRES_PASSWORD: "gigant"
+    DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"
+    CORS_ALLOW_ORIGIN: "/*/"
+    JWT_SECRET_KEY: "%kernel.project_dir%/config/jwt/private.pem"
+    JWT_PUBLIC_KEY: "%kernel.project_dir%/config/jwt/public.pem"
+    JWT_PASSPHRASE: "secret"
+    APP_ENV: "test"
+  script:
+    - symfony php bin/console doctrine:migrations:migrate --no-interaction
+    - symfony php bin/console doctrine:schema:validate
+    - symfony php bin/console doctrine:migrations:migrate first --no-interaction
+  dependencies:
+    - Build
+
 ################## Jobs from stage report ##################
 
 PhpUnit coverage:
@@ -125,4 +148,5 @@ PhpUnit coverage:
   needs: [ "Build" ]
   except:
     - schedules
+
 
