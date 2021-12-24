@@ -11,6 +11,16 @@ stages:
   - Release
   - Deploy
 
+variables:
+  KAFKA_HOST: ""
+  KAFKA_PORT: ""
+  KAFKA_USER: ""
+  KAFKA_PASS: ""
+  KAFKA_MECHANISM: ""
+  KAFKA_PROTOCOL: ""
+  KAFKA_CERTIFICATE_LOCATION: ""
+  KAFKA_TOPIC: ""
+  KAFKA_GROUP: ""
 
 Build:
   image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
