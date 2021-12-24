@@ -25,6 +25,7 @@ variables:
   KAFKA_GROUP: ""
 
 Build:
+  extends: .job_base
   image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
   stage: Build
   variables:
@@ -63,7 +64,7 @@ Build:
 
 
 .job_phpunit: &job_phpunit
-  <<: *job_base
+  extends: .job_base
   image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
   stage: Test
   when: always
@@ -106,7 +107,7 @@ Build:
     - Build
 
 .job_phpcs: &job_phpcs
-  <<: *job_base
+  extends: .job_base
   image: registry.gigwork.ru/gigwork/ci/msa-backend/php-80
   stage: Report
   when: manual
