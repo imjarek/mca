@@ -25,7 +25,7 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - XDEBUG_SESSION=PHPSTORM
     volumes:
-      - ./src/:/var/www
+      - ./:/var/www
 
 
   nginx:
@@ -33,7 +33,7 @@ services:
     build:
       context: ./docker/nginx
     volumes:
-      - ./src/:/var/www
+      - ./:/var/www
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/nginx/sites/:/etc/nginx/sites-available
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d
