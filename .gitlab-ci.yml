@@ -1,16 +1,10 @@
 include:
   - project: 'gigwork/ci/templates'
     ref: master
-    file: '.release_docker_image.yml'
-  - project: 'gigwork/ci/templates'
-    ref: master
     file: '.job_base.yml'
   - project: 'gigwork/ci/templates'
     ref: master
-    file: 'ssh/.add_ssh_known_host.yml'  
-  - project: 'gigwork/ci/templates'
-    ref: master
-    file: 'ssh/.init_ssh.yml'      
+    file: 'ssh/.ssh.yml'
 
 stages:
   - Build
@@ -63,7 +57,6 @@ Build:
     - Build
 
 .job_phpunit_coverage: &job_phpunit_coverage
-  <<: *job_phpunit
   stage: Report
   when: manual
   script:
