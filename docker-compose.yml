@@ -3,7 +3,7 @@ version: '3.8'
 services:
   db:
     container_name: db
-    image: postgres:12
+    image: registry.gigwork.ru/docker/postgresql-v134
     restart: always
     volumes:
       - "./docker/db/data:/var/lib/postgresql/data/pgdata"
@@ -27,8 +27,7 @@ services:
     volumes:
       - ./:/var/www
       - ./logs:/var/logs
-
-
+    tty: true
   nginx:
     container_name: nginx
     build:
