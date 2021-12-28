@@ -5,57 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1bb0274-83eb-4766-886f-4820e2466da8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/phpcs.xml.dist" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Application/HealthControllerTest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/AddCommand1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/AddCommand2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/AddCommand3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/CliAdd.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/CliInterpreters.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/CreateServer.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/PhpConfig.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/PhpServerSettings.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/RemotePhpInterpreter.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/RunCommand.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/TestFrameworks.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/TestRemoteInterpreter.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Readme/ValidateServer.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/Unit/FrameworkTest" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/mca.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mca.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker/php-fpm/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/docker/php-fpm/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/.helmignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/Chart.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/Chart.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/config/mysql.url" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/config/parameters.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/templates/NOTES.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/templates/_helpers.tpl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/templates/deployment-worker.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/templates/deployment.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/templates/hpa.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/templates/ingress.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/templates/migrations.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/templates/secrets/app-secret.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/templates/secrets/jwt.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/templates/secrets/mysql.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/templates/secrets/rabbitmq.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/templates/service.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/chart/values.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/docker-compose.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/kafka/ca.cert" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/artifact/nginx/nginx.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/ci/docker-compose.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20211221201207.php" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/Version20211224155430.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20211224151520.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/phpunit.xml.dist" beforeDir="false" afterPath="$PROJECT_DIR$/phpunit.xml.dist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UI/Http/Rest/Controller/Health/HealthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/Http/Rest/Controller/Health/HealthController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/php-fpm/zip.ini" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +27,6 @@
     <setting file="file://$PROJECT_DIR$/public/index.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/docker-compose.yml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/docker/php-fpm/Dockerfile" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/docker/php-fpm/zip.ini" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -274,7 +226,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1640685451523</updated>
-      <workItem from="1640685453007" duration="5652000" />
+      <workItem from="1640685453007" duration="9460000" />
     </task>
     <servers />
   </component>
