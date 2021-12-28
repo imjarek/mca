@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace UI\Http\Rest\Controller\Health;
 
+use App\Domain\User\Repository\UserRepository;
 use App\Shared\Infrastructure\Event\ReadModel\ElasticSearchEventRepository;
 use UI\Http\Rest\Response\OpenApiResponse;
 use OpenApi\Annotations as OA;
@@ -12,17 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class HealthController
 {
-    private ElasticSearchEventRepository $elasticSearchEventRepository;
+    private UserRepository $userRepository;
 
-    private MysqlReadModelUserRepository $mysqlReadModelUserRepository;
-
-//    public function __construct(
-//        ElasticSearchEventRepository $elasticSearchEventRepository,
-//        MysqlReadModelUserRepository $mysqlReadModelUserRepository)
-//    {
-//        $this->elasticSearchEventRepository = $elasticSearchEventRepository;
-//        $this->mysqlReadModelUserRepository = $mysqlReadModelUserRepository;
-//    }
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
 
     /**
      * @Route(
@@ -43,21 +39,16 @@ final class HealthController
      */
     public function __invoke(Request $request): OpenApiResponse
     {
-        $elastic = null;
-        $mysql = null;
-
         if (
-            true === $elastic = $this->elasticSearchEventRepository->isHealthly() &&
-            true === $mysql = $this->mysqlReadModelUserRepository->isHealthy()
+            true === $db = $this->userRepository->isHealthy()
         ) {
             return OpenApiResponse::empty(200);
         }
 
         return OpenApiResponse::fromPayload(
             [
-                'Healthy services' => [
-                    'Elastic' => $elastic,
-                    'MySQL' => $mysql,
+                'services' => [
+                    'PostgreSQL' => $db,
                 ],
             ],
             500
