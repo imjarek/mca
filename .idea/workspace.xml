@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="a1bb0274-83eb-4766-886f-4820e2466da8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/docker/php-fpm/Dockerfile" beforeDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/php-fpm/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/docker/php-fpm/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/php-fpm/zip.ini" beforeDir="false" />
+>>>>>>> 06b40e2b0c14efc5ea0b0049fc00f1dca775cee8
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +30,10 @@
     <setting file="file://$PROJECT_DIR$/docker/php-fpm/xdebug.ini" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/public/index.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/docker-compose.yml" root0="FORCE_HIGHLIGHTING" />
+<<<<<<< HEAD
+=======
+    <setting file="file://$PROJECT_DIR$/docker/php-fpm/Dockerfile" root0="FORCE_HIGHLIGHTING" />
+>>>>>>> 06b40e2b0c14efc5ea0b0049fc00f1dca775cee8
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -228,7 +238,11 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1640685451523</updated>
+<<<<<<< HEAD
       <workItem from="1640685453007" duration="16425000" />
+=======
+      <workItem from="1640685453007" duration="9460000" />
+>>>>>>> 06b40e2b0c14efc5ea0b0049fc00f1dca775cee8
     </task>
     <servers />
   </component>

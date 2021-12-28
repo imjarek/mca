@@ -13,6 +13,7 @@ services:
         PGDATA: /var/lib/postgresql/data/pgdata
     ports:
         - 15432:5432
+
   php-fpm:
     container_name: php-fpm
     build:
