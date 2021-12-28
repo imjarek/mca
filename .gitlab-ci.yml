@@ -5,6 +5,12 @@ include:
   - project: 'gigwork/ci/templates'
     ref: master
     file: 'ssh/.ssh.yml'
+  - project: 'gigwork/ci/templates'
+    ref: master
+    file: 'php/tests/.unit.yml'    
+  - project: 'gigwork/ci/templates'
+    ref: master
+    file: 'php/reports/.pcs.yml'
 
 stages:
   - Build
