@@ -8,9 +8,6 @@ include:
   - project: 'gigwork/ci/templates'
     ref: master
     file: 'php/tests/.unit.yml'    
-  - project: 'gigwork/ci/templates'
-    ref: master
-    file: 'php/reports/.pcs.yml'
 
 stages:
   - Build
@@ -31,12 +28,11 @@ variables:
   KAFKA_CERTIFICATE_LOCATION: ""
   KAFKA_TOPIC: ""
   KAFKA_GROUP: ""
+  DATABASE_URL: ""
 
 Build:
   extends: .job_base
   stage: Build
-  variables:
-    DATABASE_URL: ""
   script:
     - touch .env
     - composer install
@@ -50,17 +46,6 @@ Build:
 
 ################## Tests and code analysis ##################
 ######################## Parts of Jobs ######################
-
-.job_phpunit: &job_phpunit
-  extends: .job_base
-  stage: Test
-  when: always
-  script:
-    - php -v
-    - export XDEBUG_MODE=coverage
-    - ./vendor/bin/phpunit --coverage-text --colors=never --coverage-cobertura=coverage.xml
-  dependencies:
-    - Build
 
 .job_phpunit_coverage: &job_phpunit_coverage
   stage: Report
@@ -144,7 +129,12 @@ Build:
 ################## Jobs from stage test ##################
 
 PhpUnit 8.0:
-  <<: *job_phpunit
+  extends: 
+    - .job_base
+    - .run_phpunit
+  stage: Test 
+  dependencies:
+    - Build  
   artifacts:
     reports:
       cobertura: coverage.xml
