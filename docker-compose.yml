@@ -26,6 +26,7 @@ services:
       - XDEBUG_SESSION=PHPSTORM
     volumes:
       - ./:/var/www
+      - ./logs:/var/logs
 
 
   nginx:
