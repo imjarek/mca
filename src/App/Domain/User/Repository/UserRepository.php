@@ -100,8 +100,7 @@ final class UserRepository extends SqlRepository implements CheckUserByEmailInte
                 user.uuid, 
                 user.credentials.email, 
                 user.createdAt, 
-                user.updatedAt'
-            ),
+                user.updatedAt'),
             AbstractQuery::HYDRATE_ARRAY
         );
     }

@@ -15,7 +15,6 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-
 class UserView implements SerializableReadModel
 {
     public const TYPE = 'UserView';

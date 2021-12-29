@@ -180,7 +180,8 @@ class Partner extends AggregateRoot
         return $this->uuid->toString();
     }
 
-    function setUsers($users) {
+    public function setUsers($users)
+    {
         $this->users = new ArrayCollection($users);
     }
 
@@ -188,5 +189,4 @@ class Partner extends AggregateRoot
     {
         return $this->uuid->toString();
     }
-
 }

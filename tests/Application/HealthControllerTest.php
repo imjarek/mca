@@ -13,6 +13,5 @@ class HealthControllerTest extends WebTestCase
         $client->request('GET', '/api/health');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Hello World');
     }
 }

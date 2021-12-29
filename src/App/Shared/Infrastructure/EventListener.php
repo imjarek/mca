@@ -2,7 +2,6 @@
 
 namespace App\Shared\Infrastructure;
 
-
 /**
  * Handles dispatched events.
  */

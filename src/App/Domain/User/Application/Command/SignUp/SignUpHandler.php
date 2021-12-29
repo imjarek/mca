@@ -14,7 +14,6 @@ use App\Domain\User\Specification\UniqueEmailSpecificationInterface;
 use App\Domain\User\Entity\User;
 use App\Shared\Infrastructure\Service\IEmailVerificationService;
 
-
 final class SignUpHandler implements CommandHandlerInterface
 {
     private UserRepositoryInterface $userRepository;

@@ -36,8 +36,11 @@ abstract class QueryController
         return $this->queryBus->ask($query);
     }
 
-    protected function jsonCollection(Collection $collection, int $status = OpenApiResponse::HTTP_OK, bool $isImmutable = false): OpenApi
-    {
+    protected function jsonCollection(
+        Collection $collection,
+        int $status = OpenApiResponse::HTTP_OK,
+        bool $isImmutable = false
+    ): OpenApi {
         $response = OpenApiResponse::collection($collection, $status);
 
         $this->decorateWithCache($response, $collection, $isImmutable);

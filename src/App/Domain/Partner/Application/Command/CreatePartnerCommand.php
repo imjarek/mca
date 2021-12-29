@@ -32,8 +32,7 @@ final class CreatePartnerCommand implements CommandInterface
         string $legalAddress,
         string $actualAdress,
         User $user
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->inn = new Inn($inn);
         $this->phone = $phone;

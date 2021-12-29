@@ -2,7 +2,6 @@
 
 namespace App\Shared\Infrastructure\Persistence\ReadModel;
 
-
 /**
  * Represents a serializable read model.
  */

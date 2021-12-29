@@ -19,7 +19,7 @@ class UserInfoController extends QueryController
     protected Security $security;
     protected UserRepository $repository;
 
-    public function __construct(UserRepository$repository, Security $security)
+    public function __construct(UserRepository $repository, Security $security)
     {
         $this->security = $security;
         $this->repository = $repository;
@@ -52,8 +52,9 @@ class UserInfoController extends QueryController
         $token = $this->security->getToken();
 
         if ($token instanceof JWTUserToken) {
-            if ($authModel = $token->getUser())
+            if ($authModel = $token->getUser()) {
                 $user = $this->repository->oneByUuid($authModel->uuid());
+            }
                 $userData = [
                     'id' => $user->uuid(),
                     'email' => $user->email(),
@@ -61,11 +62,9 @@ class UserInfoController extends QueryController
                     'last_name' => $user->getLastName(),
                     'email_verified' => $user->getEmailVerified()
                 ];
-            return $this->json(Item::fromPayload($user->uuid(), UserView::TYPE, $userData));
+                return $this->json(Item::fromPayload($user->uuid(), UserView::TYPE, $userData));
         }
 
         throw new UnauthenticatedException();
-
-
     }
 }

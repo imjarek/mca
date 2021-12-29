@@ -48,7 +48,6 @@ final class CreatePartnerHandler implements CommandHandlerInterface
         $this->partnerRepository->store($partner);
 
         if ($command->user instanceof User) {
-
         }
     }
 }

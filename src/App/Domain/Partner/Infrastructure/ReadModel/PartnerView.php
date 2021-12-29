@@ -13,7 +13,6 @@ use Assert\AssertionFailedException;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-
 class PartnerView implements SerializableReadModel
 {
     public const TYPE = 'PartnerView';

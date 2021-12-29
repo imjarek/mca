@@ -78,7 +78,17 @@ final class CreatePartnerController extends CommandController
         $user = $userRepository->oneByUuid($this->getUser()->uuid());
 
         $commandRequest = new CreatePartnerCommand(
-            $uuid, $inn, $phone, $bik, $kpp, $bank, $bankAccount, $regionCode, $legalAddress, $actualAdress, $user
+            $uuid,
+            $inn,
+            $phone,
+            $bik,
+            $kpp,
+            $bank,
+            $bankAccount,
+            $regionCode,
+            $legalAddress,
+            $actualAdress,
+            $user
         );
 
         $this->handle($commandRequest);

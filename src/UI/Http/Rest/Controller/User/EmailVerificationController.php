@@ -23,8 +23,7 @@ class EmailVerificationController
         UserRepository $repository,
         VerifyEmailHelperInterface $verificator,
         MailerInterface $mailer
-    )
-    {
+    ) {
         $this->verificator = $verificator;
         $this->mailer = $mailer;
         $this->repository = $repository;

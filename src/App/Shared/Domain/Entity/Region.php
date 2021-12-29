@@ -2,7 +2,6 @@
 
 namespace App\Shared\Domain\Entity;
 
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**

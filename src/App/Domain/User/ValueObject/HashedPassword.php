@@ -6,9 +6,11 @@ namespace App\Domain\User\ValueObject;
 
 use Assert\Assertion;
 use Assert\AssertionFailedException;
-use const PASSWORD_BCRYPT;
-use function password_verify;
 use RuntimeException;
+
+use function password_verify;
+
+use const PASSWORD_BCRYPT;
 
 final class HashedPassword
 {

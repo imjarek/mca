@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Domain\User\Entity;
 
 use App\Domain\User\Specification\UniqueEmailSpecificationInterface;
@@ -19,7 +18,6 @@ use App\Shared\Infrastructure\Event\Publisher\AsyncEventPublisher;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use Doctrine\ORM\Mapping as ORM;
-
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Messenger\MessageBus;
@@ -87,12 +85,12 @@ class User extends AggregateRoot
         return $user;
     }
 
-    public function getFirstName():?string
+    public function getFirstName(): ?string
     {
         return $this->firstname;
     }
 
-    public function getLastName():?string
+    public function getLastName(): ?string
     {
         return $this->lastname;
     }

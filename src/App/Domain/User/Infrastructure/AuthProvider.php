@@ -33,7 +33,6 @@ final class AuthProvider implements UserProviderInterface
         } catch (NotFoundException) {
             throw new UserNotFoundException();
         }
-
     }
     /**
      * @throws NotFoundException

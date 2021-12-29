@@ -33,8 +33,7 @@ final class PartnerWasCreated implements Serializable
         $regionCode,
         $legalAddress,
         $actualAddress
-    )
-    {
+    ) {
         $this->uuid          = $uuid;
         $this->inn           = $inn;
         $this->phone         = $phone;

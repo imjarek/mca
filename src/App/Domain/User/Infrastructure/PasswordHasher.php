@@ -7,8 +7,8 @@ namespace App\Domain\User\Infrastructure;
 use App\User\Domain\ValueObject\Auth\HashedPassword;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
-final class PasswordHasher implements PasswordHasherInterface {
-
+final class PasswordHasher implements PasswordHasherInterface
+{
     private string $hasher;
 
     public function __construct()
@@ -16,7 +16,7 @@ final class PasswordHasher implements PasswordHasherInterface {
         $this->hasher = HashedPassword::class;
     }
 
-    public function hash(string $plainPassword): string 
+    public function hash(string $plainPassword): string
     {
         return $this->hasher::encode($plainPassword)->toString();
     }

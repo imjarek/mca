@@ -11,14 +11,13 @@ use Ramsey\Uuid\UuidInterface;
 
 class PartnerStore extends SqlRepository implements PartnerRepositoryInterface
 {
-    public function __construct(EntityManagerInterface $entityManager
-    ) {
+    public function __construct(EntityManagerInterface $entityManager)
+    {
         parent::__construct($entityManager);
     }
 
     protected function setEntityManager(): void
     {
-
     }
 
     public function store(Partner $partner): void
@@ -28,6 +27,7 @@ class PartnerStore extends SqlRepository implements PartnerRepositoryInterface
 
     public function get(UuidInterface $uuid): Partner
     {
-        return $this->entityManager->find(Partner::class, $uuid->toString());;
+        return $this->entityManager->find(Partner::class, $uuid->toString());
+        ;
     }
 }

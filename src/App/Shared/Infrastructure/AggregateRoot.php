@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure;
 
-
 /**
  * Base class for aggregate roots.
  */
 class AggregateRoot
 {
-
     public function apply($event): void
     {
         $this->handle($event);
-
     }
 
     /**
@@ -40,6 +37,6 @@ class AggregateRoot
     {
         $classParts = explode('\\', get_class($event));
 
-        return 'apply'.end($classParts);
+        return 'apply' . end($classParts);
     }
 }

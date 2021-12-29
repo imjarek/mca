@@ -150,13 +150,16 @@
       <path value="$PROJECT_DIR$/vendor/myclabs/deep-copy" />
       <path value="$PROJECT_DIR$/vendor/lcobucci/clock" />
       <path value="$PROJECT_DIR$/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/vendor/symfony/browser-kit" />
+      <path value="$PROJECT_DIR$/vendor/symfony/dom-crawler" />
+      <path value="$PROJECT_DIR$/vendor/symfony/css-selector" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
     <interpreters>
       <interpreter id="8d38c0e2-c520-40dc-8167-20fef142a7b9" name="php-fpm" home="docker-compose://DATA" debugger_id="php.debugger.XDebug">
         <remote_data INTERPRETER_PATH="php" HELPERS_PATH="/opt/.phpstorm_helpers" INITIALIZED="false" VALID="true" RUN_AS_ROOT_VIA_SUDO="false" DOCKER_ACCOUNT_NAME="Docker" DOCKER_COMPOSE_SERVICE_NAME="php-fpm" DOCKER_REMOTE_PROJECT_PATH="/opt/project">
-          <type_data command="RUN" />
+          <type_data command="EXEC" />
           <dockerComposeConfigurationPaths>
             <item value="$PROJECT_DIR$/docker-compose.yml" />
           </dockerComposeConfigurationPaths>
@@ -168,11 +171,11 @@
   <component name="PhpInterpretersPhpInfoCache">
     <phpInfoCache>
       <interpreter name="php-fpm">
-        <phpinfo binary_type="PHP" php_cli="/usr/local/bin/php" path_separator=":" version="8.1.1">
-          <additional_php_ini>/usr/local/etc/php/conf.d/docker-php-ext-amqp.ini, /usr/local/etc/php/conf.d/docker-php-ext-intl.ini, /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini, /usr/local/etc/php/conf.d/docker-php-ext-pdo_pgsql.ini, /usr/local/etc/php/conf.d/docker-php-ext-pgsql.ini, /usr/local/etc/php/conf.d/docker-php-ext-sodium.ini, /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini, /usr/local/etc/php/conf.d/docker-php-ext-zip.ini, /usr/local/etc/php/conf.d/php.ini, /usr/local/etc/php/conf.d/xdebug.ini</additional_php_ini>
-          <configuration_file />
+        <phpinfo binary_type="PHP" php_cli="/usr/bin/php8" path_separator=":" version="8.0.13">
+          <additional_php_ini>/etc/php8/conf.d/00_ctype.ini, /etc/php8/conf.d/00_curl.ini, /etc/php8/conf.d/00_dom.ini, /etc/php8/conf.d/00_fileinfo.ini, /etc/php8/conf.d/00_gd.ini, /etc/php8/conf.d/00_iconv.ini, /etc/php8/conf.d/00_intl.ini, /etc/php8/conf.d/00_ldap.ini, /etc/php8/conf.d/00_mbstring.ini, /etc/php8/conf.d/00_opcache.ini, /etc/php8/conf.d/00_openssl.ini, /etc/php8/conf.d/00_pcntl.ini, /etc/php8/conf.d/00_pdo.ini, /etc/php8/conf.d/00_posix.ini, /etc/php8/conf.d/00_session.ini, /etc/php8/conf.d/00_simplexml.ini, /etc/php8/conf.d/00_sockets.ini, /etc/php8/conf.d/00_sodium.ini, /etc/php8/conf.d/00_sysvsem.ini, /etc/php8/conf.d/00_tokenizer.ini, /etc/php8/conf.d/00_xml.ini, /etc/php8/conf.d/00_xmlwriter.ini, /etc/php8/conf.d/00_zip.ini, /etc/php8/conf.d/01_pdo_pgsql.ini, /etc/php8/conf.d/01_phar.ini, /etc/php8/conf.d/01_xmlreader.ini, /etc/php8/conf.d/10_igbinary.ini, /etc/php8/conf.d/20_memcached.ini, /etc/php8/conf.d/40_amqp.ini, /etc/php8/conf.d/50_xdebug.ini, /etc/php8/conf.d/70_yaml.ini, /etc/php8/conf.d/docker-php-memlimit.ini, /etc/php8/conf.d/rdkafka.ini, /etc/php8/conf.d/xdebug.ini</additional_php_ini>
+          <configuration_file>/etc/php8/php.ini</configuration_file>
           <configuration_options>
-            <configuration_option name="include_path" value=".:/usr/local/lib/php" />
+            <configuration_option name="include_path" value=".:/usr/share/php8" />
           </configuration_options>
           <debuggers>
             <debugger_info debugger="xdebug" debugger_version="3.1.2">
@@ -194,41 +197,47 @@
             <extension name="dom" />
             <extension name="fileinfo" />
             <extension name="filter" />
-            <extension name="ftp" />
+            <extension name="gd" />
             <extension name="hash" />
             <extension name="iconv" />
+            <extension name="igbinary" />
             <extension name="intl" />
             <extension name="json" />
+            <extension name="ldap" />
             <extension name="libxml" />
             <extension name="mbstring" />
-            <extension name="mysqlnd" />
+            <extension name="memcached" />
             <extension name="openssl" />
+            <extension name="pcntl" />
             <extension name="pcre" />
             <extension name="pdo_pgsql" />
-            <extension name="pdo_sqlite" />
-            <extension name="pgsql" />
+            <extension name="phpdbg_webhelper" />
             <extension name="posix" />
             <extension name="rdkafka" />
             <extension name="readline" />
             <extension name="session" />
+            <extension name="sockets" />
             <extension name="sodium" />
-            <extension name="sqlite3" />
             <extension name="standard" />
+            <extension name="sysvsem" />
             <extension name="tokenizer" />
             <extension name="xdebug" />
             <extension name="xml" />
             <extension name="xmlreader" />
             <extension name="xmlwriter" />
+            <extension name="yaml" />
+            <extension name="zip" />
             <extension name="zlib" />
           </loaded_extensions>
         </phpinfo>
       </interpreter>
     </phpInfoCache>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.0" />
   <component name="PhpUnit">
     <phpunit_settings>
       <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/phpunit.xml.dist" custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" use_configuration_file="true" />
+      <phpunit_by_interpreter interpreter_id="8d38c0e2-c520-40dc-8167-20fef142a7b9" configuration_file_path="/var/www/phpunit.xml.dist" custom_loader_path="/var/www/vendor/autoload.php" phpunit_phar_path="" use_configuration_file="true" />
     </phpunit_settings>
   </component>
 </project>

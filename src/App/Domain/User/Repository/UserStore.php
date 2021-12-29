@@ -11,14 +11,13 @@ use Ramsey\Uuid\UuidInterface;
 
 class UserStore extends SqlRepository implements UserRepositoryInterface
 {
-    public function __construct(EntityManagerInterface $entityManager
-    ) {
+    public function __construct(EntityManagerInterface $entityManager)
+    {
         parent::__construct($entityManager);
     }
 
     protected function setEntityManager(): void
     {
-
     }
 
     public function store(User $user): void
