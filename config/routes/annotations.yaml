@@ -1,5 +1,10 @@
-controllers:
-    resource: ../../src/UI/Http/Rest/Controller/
+api_controllers:
+    resource: '../../src/UI/Http/Rest/Controller/'
+    type: annotation
+    prefix: /api
+
+web_controllers:
+    resource: '../../src/UI/Http/Web/Controller/'
     type: annotation
 
 kernel:

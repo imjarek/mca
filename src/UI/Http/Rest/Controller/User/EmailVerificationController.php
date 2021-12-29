@@ -5,6 +5,7 @@ namespace UI\Http\Rest\Controller\User;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Exception\EmailVerificationException;
 use App\Domain\User\Repository\UserRepository;
+use Assert\AssertionFailedException;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,8 +14,10 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 use UI\Http\Web\Controller\DefaultController;
+use OpenApi\Annotations as OA;
+use Throwable;
 
-class EmailVerificationController extends DefaultController
+class EmailVerificationController
 {
     public function __construct(
         UserRepository $repository,
@@ -28,7 +31,35 @@ class EmailVerificationController extends DefaultController
     }
 
     /**
-     * @Route("/verify_email", name="verify_email")
+     * @Route(
+     *     "/verify_email",
+     *     name="user email verification",
+     *     methods={"GET"}
+     * )
+     *
+     * @OA\Response(
+     *     response=400,
+     *     description="Bad request"
+     * )
+     * @OA\Parameter (
+     *     name="email",
+     *     in="path",
+     *     @OA\Schema(type="string")
+     * )
+     * * @OA\Parameter (
+     *     name="signature",
+     *     in="path",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Parameter (
+     *     name="expires",
+     *     in="path",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Tag(name="User")
+     *
+     * @throws AssertionFailedException
+     * @throws Throwable
      */
     public function verifyUserEmail(Request $request): Response
     {
@@ -43,7 +74,7 @@ class EmailVerificationController extends DefaultController
             $this->repository->apply();
 
             return new JsonResponse(['message' => 'Email Verified Successfully']);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
             throw new EmailVerificationException();
         }
     }

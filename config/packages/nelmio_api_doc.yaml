@@ -2,7 +2,7 @@ nelmio_api_doc:
     documentation:
         info:
             title: MSA
-            description: Marketplace for Staffing Agencies
+            description: Marketplace for Staffing Agencies (see /api/doc for OpenApi UI)
             version: 1.0.0
         components:
             securitySchemes:

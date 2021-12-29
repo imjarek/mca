@@ -21,18 +21,14 @@ final class SignUpHandler implements CommandHandlerInterface
 
     private UniqueEmailSpecificationInterface $uniqueEmailSpecification;
 
-    private EventBusInterface $eventBus;
-
     public function __construct(
         UserRepositoryInterface $userRepository,
         UniqueEmailSpecificationInterface $uniqueEmailSpecification,
         IEmailVerificationService $verificator,
-        EventBusInterface $eventBus
     ) {
         $this->userRepository = $userRepository;
         $this->uniqueEmailSpecification = $uniqueEmailSpecification;
         $this->verificator = $verificator;
-        $this->eventBus = $eventBus;
     }
 
     /**
